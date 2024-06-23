@@ -1,0 +1,15 @@
+<.header>
+  Dispositivo <%= @dispositivo.id %>
+  <:subtitle>This is a dispositivo record from your database.</:subtitle>
+  <:actions>
+    <.link href={~p"/dispositivo/#{@dispositivo}/edit"}>
+      <.button>Edit dispositivo</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Nome Dispositivo"><%= @dispositivo.nomedispositivo %></:item>
+</.list>
+
+<.back navigate={~p"/dispositivo"}>BVoltar para Dispositivos</.back>

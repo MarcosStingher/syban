@@ -1,0 +1,23 @@
+<.header>
+  Dispositivos
+  <:actions>
+    <.link href={~p"/dispositivo/new"}>
+      <.button>Criar Dispositivo</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="dispositivo" rows={@dispositivo_collection} row_click={&JS.navigate(~p"/dispositivo/#{&1}")}>
+  <:col :let={dispositivo} label="Nome Dispositivo"><%= dispositivo.nomedispositivo %></:col>
+  <:action :let={dispositivo}>
+    <div class="sr-only">
+      <.link navigate={~p"/dispositivo/#{dispositivo}"}>Mostrar</.link>
+    </div>
+    <.link navigate={~p"/dispositivo/#{dispositivo}/edit"}>Editar</.link>
+  </:action>
+  <:action :let={dispositivo}>
+    <.link href={~p"/dispositivo/#{dispositivo}"} method="delete" data-confirm="Are you sure?">
+      Deletar
+    </.link>
+  </:action>
+</.table>
