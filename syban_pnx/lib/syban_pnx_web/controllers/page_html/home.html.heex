@@ -1,3 +1,48 @@
- use PhoenixUI
-    # Or import component individually
-    import PhoenixUI.Components.Button, only: [button: 1]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfico de Linha - Uso de Memória RAM</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div style="width: 75%; margin: auto;">
+        <canvas id="ramUsageChart"></canvas>
+    </div>
+
+    <script>
+        // Dados de exemplo para uso de memória RAM
+        const labels = ["10:00", "10:05", "10:10", "10:15", "10:20", "10:25", "10:30"];
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Uso de Memória RAM (MB)',
+                data: [512, 630, 590, 670, 720, 690, 750],
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        };
+
+        // Configuração do gráfico
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        };
+
+        // Renderiza o gráfico
+        window.onload = function() {
+            const ctx = document.getElementById('ramUsageChart').getContext('2d');
+            new Chart(ctx, config);
+        };
+    </script>
+</body>
+</html>
