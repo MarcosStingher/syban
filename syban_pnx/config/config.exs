@@ -61,8 +61,10 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-config :syban_pnx, SybanPnxWeb.Endpoint,
+
+  config :syban_pnx, SybanPnxWeb.Endpoint,
   live_view: [signing_salt: "SECRET_SALT"]
+
 
 
 # Import environment specific config. This must remain at the bottom
