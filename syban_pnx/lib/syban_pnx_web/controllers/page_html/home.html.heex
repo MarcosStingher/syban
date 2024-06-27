@@ -1,3 +1,182 @@
- use PhoenixUI
-    # Or import component individually
-    import PhoenixUI.Components.Button, only: [button: 1]
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboards de Monitoramento</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <style>
+            body {
+                display: flex;
+                font-family: Arial, sans-serif;
+            }
+            .sidebar {
+                width: 200px;
+                background-color: #2c3e50;
+                color: #ecf0f1;
+                padding: 15px;
+                box-sizing: border-box;
+                height: 100vh;
+            }
+            .sidebar a {
+                color: #ecf0f1;
+                text-decoration: none;
+                display: block;
+                padding: 10px 0;
+            }
+            .sidebar a:hover {
+                background-color: #34495e;
+            }
+            .main-content {
+                flex-grow: 1;
+                padding: 20px;
+                box-sizing: border-box;
+            }
+            .chart-container {
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+            }
+            .chart-box {
+                width: 45%;
+            }
+            canvas {
+                width: 100% !important;
+                height: auto !important;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="sidebar">
+            <h2>Syban   </h2>
+            <a href="#">Dashboard</a>
+            <a href="/dispositivo">Dispositivo</a>
+            <a href="/Relatorio">Relatorio</a>
+            <a href="#">Suporte</a>
+        </div>
+        <div class="main-content">
+            <div class="chart-container">
+                <div class="chart-box">
+                    <canvas id="ramUsageChart"></canvas>
+                </div>
+                <div class="chart-box">
+                    <canvas id="diskUsageChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let ramUsageChart;
+            let diskUsageChart;
+
+            async function fetchData() {
+                const response = await fetch("http://localhost:4000/api/monitoramento");
+                const result = await response.json();
+                return result.data;
+            }
+
+            function processData(data) {
+                const labels = data.map(item => new Date(item.datahora).toLocaleString());
+                const memoryUsage = data.map(item => parseFloat(item.memPercentual));
+                const diskPercentual = data.map(item => parseFloat(item.discoPercentual));
+                const diskTotal = data.map(item => parseFloat(item.discoTotal));
+                const diskUsed = data.map(item => parseFloat(item.discoUsado));
+
+                return { labels, memoryUsage, diskPercentual, diskTotal, diskUsed };
+            }
+
+            async function renderCharts() {
+                const data = await fetchData();
+                const { labels, memoryUsage, diskPercentual, diskTotal, diskUsed } = processData(data);
+
+                // Configuração do Gráfico de Linha para Uso de Memória RAM
+                const ramUsageData = {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Uso de Memória RAM (%)',
+                        data: memoryUsage,
+                        fill: false,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                };
+
+                const ramUsageConfig = {
+                    type: 'line',
+                    data: ramUsageData,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                };
+
+                // Configuração do Gráfico de Colunas para Uso de Disco
+                const diskUsageData = {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Disco Percentual (%)',
+                            data: diskPercentual,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Disco Total (GB)',
+                            data: diskTotal,
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Disco Usado (GB)',
+                            data: diskUsed,
+                            backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                            borderColor: 'rgba(255, 206, 86, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                };
+
+                const diskUsageConfig = {
+                    type: 'bar',
+                    data: diskUsageData,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                };
+
+                // Se os gráficos já existirem, atualiza os dados; caso contrário, cria os gráficos
+                if (ramUsageChart && diskUsageChart) {
+                    ramUsageChart.data = ramUsageData;
+                    ramUsageChart.update();
+                    diskUsageChart.data = diskUsageData;
+                    diskUsageChart.update();
+                } else {
+                    const ramCtx = document.getElementById('ramUsageChart').getContext('2d');
+                    ramUsageChart = new Chart(ramCtx, ramUsageConfig);
+
+                    const diskCtx = document.getElementById('diskUsageChart').getContext('2d');
+                    diskUsageChart = new Chart(diskCtx, diskUsageConfig);
+                }
+            }
+
+            function startTimer() {
+                setInterval(renderCharts, 6000); // 60000ms = 1 minuto
+            }
+
+            window.onload = function() {
+                renderCharts(); // Renderiza inicialmente os gráficos
+                startTimer(); // Inicia o timer para atualizar os gráficos a cada 1 minuto
+            };
+        </script>
+    </body>
+    </html>

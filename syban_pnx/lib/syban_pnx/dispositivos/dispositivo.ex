@@ -2,7 +2,7 @@ defmodule SybanPnx.Dispositivos.Dispositivo do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @primary_key {:idmaquina, :id, autogenerate: true}
+  @primary_key {:id, :id, autogenerate: true}
   schema "dispositivo" do
     field :nomedispositivo, :string
 

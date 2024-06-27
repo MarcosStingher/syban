@@ -1,0 +1,25 @@
+<.header>
+  Ram usage <%= @ram_usage.id %>
+  <:subtitle>This is a ram_usage record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/ram_usages/#{@ram_usage}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit ram_usage</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+</.list>
+
+<.back navigate={~p"/ram_usages"}>Back to ram_usages</.back>
+
+<.modal :if={@live_action == :edit} id="ram_usage-modal" show on_cancel={JS.patch(~p"/ram_usages/#{@ram_usage}")}>
+  <.live_component
+    module={SybanPnxWeb.RAMUsageLive.FormComponent}
+    id={@ram_usage.id}
+    title={@page_title}
+    action={@live_action}
+    ram_usage={@ram_usage}
+    patch={~p"/ram_usages/#{@ram_usage}"}
+  />
+</.modal>
