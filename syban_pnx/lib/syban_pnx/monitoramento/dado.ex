@@ -22,13 +22,13 @@ defmodule SybanPnx.Monitoramento.Dado do
     field :gpuMemUsada, :decimal
     field :gpuMemLivre, :decimal
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false
   def changeset(dado, attrs) do
     dado
-    |> cast(attrs, [:cpuPercentual, :datahora, :discoPercentual, :discoTotal, :discoUsado, :freqCPU, :gpuMemLivre, :gpuMemTot, :gpuMemUsada, :gpuNome, :gpuTemp, :gpuUsada, :memPercentual, :memRamTotal, :memRamUsada, :processFisico, :processLogico, :idmaquina])
-    |> validate_required([:cpuPercentual, :datahora, :discoPercentual, :discoTotal, :discoUsado, :freqCPU, :gpuMemLivre, :gpuMemTot, :gpuMemUsada, :gpuNome, :gpuTemp, :gpuUsada, :memPercentual, :memRamTotal, :memRamUsada, :processFisico, :processLogico, :idmaquina])
+    |> cast(attrs, [:datahora, :idmaquina, :memRamTotal, :memRamUsada, :memPercentual, :discoTotal, :discoUsado, :discoPercentual, :cpuPercentual, :processLogico, :processFisico, :freqCPU, :gpuNome, :gpuUsada, :gpuTemp, :gpuMemTot, :gpuMemUsada, :gpuMemLivre])
+    |> validate_required([:datahora, :idmaquina, :memRamTotal, :memRamUsada, :memPercentual, :discoTotal, :discoUsado, :discoPercentual, :cpuPercentual, :processLogico, :processFisico, :freqCPU, :gpuNome, :gpuUsada, :gpuTemp, :gpuMemTot, :gpuMemUsada, :gpuMemLivre])
   end
 end
