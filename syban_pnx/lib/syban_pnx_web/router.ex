@@ -28,6 +28,13 @@ defmodule SybanPnxWeb.Router do
     post "/monitoramento", DadoController, :create
   end
 
+  scope "/", SybanPnxWeb do
+    pipe_through :browser
+
+    live "/ram-usage", RAMUsageLive.Index, :index
+  end
+
+
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:syban_pnx, :dev_routes) do
     # If you want to use the LiveDashboard in production, you should put
