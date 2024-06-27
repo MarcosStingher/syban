@@ -10,7 +10,7 @@ defmodule SybanPnxWeb.DispositivoControllerTest do
   describe "index" do
     test "lists all dispositivo", %{conn: conn} do
       conn = get(conn, ~p"/dispositivo")
-      assert html_response(conn, 200) =~ "Listing Dispositivo"
+      assert html_response(conn, 200) =~ "Listando Dispositivo"
     end
   end
 

@@ -34,4 +34,21 @@ defmodule SybanPnx.MonitoramentoFixtures do
 
     dado
   end
+
+  @doc """
+  Generate a evento.
+  """
+  def evento_fixture(attrs \\ %{}) do
+    {:ok, evento} =
+      attrs
+      |> Enum.into(%{
+        evento: "some evento",
+        icvinculada: "cpuPercentual",
+        impacto: 42,
+        urgencia: 42
+      })
+      |> SybanPnx.Monitoramento.create_evento()
+
+    evento
+  end
 end

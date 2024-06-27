@@ -32,4 +32,16 @@ defmodule SybanPnx.Application do
     SybanPnxWeb.Endpoint.config_change(changed, removed)
     :ok
   end
+
+  def start(_type, _args) do
+    children = [
+      SybanPnx.Repo,
+      SybanPnxWeb.Endpoint,
+      {SybanPnx.Processor, []}
+    ]
+
+    opts = [strategy: :one_for_one, name: SybanPnx.Supervisor]
+    Supervisor.start_link(children, opts)
+  end
+
 end

@@ -1,0 +1,8 @@
+<.header>
+  Editar Evento <%= @evento.id %>
+  <:subtitle>Use this form to manage evento records in your database.</:subtitle>
+</.header>
+
+<.evento_form changeset={@changeset} action={~p"/eventos/#{@evento}"} />
+
+<.back navigate={~p"/eventos"}>Voltar para eventos</.back>

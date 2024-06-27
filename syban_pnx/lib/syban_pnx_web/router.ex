@@ -17,14 +17,13 @@ defmodule SybanPnxWeb.Router do
   scope "/", SybanPnxWeb do
     pipe_through :browser
     get "/", PageController, :home
-    resources "/teste", TesteController, except: [:new, :edit]
     resources "/dispositivo", DispositivoController
     resources "/monitoramento", DadoController, except: [:new, :edit]
+    resources "/eventos", EventoController
   end
 
   scope "/api", SybanPnxWeb do
     pipe_through :api
-    get "/teste", TesteController, :index
     get "/monitoramento", DadoController, :index
     post "/monitoramento", DadoController, :create
   end

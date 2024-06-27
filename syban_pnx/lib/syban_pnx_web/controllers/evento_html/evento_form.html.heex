@@ -1,0 +1,12 @@
+<.simple_form :let={f} for={@changeset} action={@action}>
+  <.error :if={@changeset.action}>
+    Oops, something went wrong! Please check the errors below.
+  </.error>
+  <.input field={f[:icvinculada]} type="text" label="IC Vinculada" />
+  <.input field={f[:evento]} type="text" label="Evento" />
+  <.input field={f[:urgencia]} type="number" label="Urgencia" />
+  <.input field={f[:impacto]} type="number" label="Impacto" />
+  <:actions>
+    <.button>Salvar Evento</.button>
+  </:actions>
+</.simple_form>

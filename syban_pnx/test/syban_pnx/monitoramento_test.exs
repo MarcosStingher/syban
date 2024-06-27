@@ -90,4 +90,64 @@ defmodule SybanPnx.MonitoramentoTest do
       assert %Ecto.Changeset{} = Monitoramento.change_dado(dado)
     end
   end
+
+  describe "eventos" do
+    alias SybanPnx.Monitoramento.Evento
+
+    import SybanPnx.MonitoramentoFixtures
+
+    @invalid_attrs %{icvinculada: nil, evento: nil, urgencia: nil, impacto: nil}
+
+    test "list_eventos/0 returns all eventos" do
+      evento = evento_fixture()
+      assert Monitoramento.list_eventos() == [evento]
+    end
+
+    test "get_evento!/1 returns the evento with given id" do
+      evento = evento_fixture()
+      assert Monitoramento.get_evento!(evento.id) == evento
+    end
+
+    test "create_evento/1 with valid data creates a evento" do
+      valid_attrs = %{icvinculada: "cpuPercentual", evento: "some evento", urgencia: 42, impacto: 42}
+
+      assert {:ok, %Evento{} = evento} = Monitoramento.create_evento(valid_attrs)
+      assert evento.icvinculada == "cpuPercentual"
+      assert evento.evento == "some evento"
+      assert evento.urgencia == 42
+      assert evento.impacto == 42
+    end
+
+    test "create_evento/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Monitoramento.create_evento(@invalid_attrs)
+    end
+
+    test "update_evento/2 with valid data updates the evento" do
+      evento = evento_fixture()
+      update_attrs = %{icvinculada: "cpuPercentual", evento: "some updated evento", urgencia: 43, impacto: 43}
+
+      assert {:ok, %Evento{} = evento} = Monitoramento.update_evento(evento, update_attrs)
+      assert evento.icvinculada == "cpuPercentual"
+      assert evento.evento == "some updated evento"
+      assert evento.urgencia == 43
+      assert evento.impacto == 43
+    end
+
+    test "update_evento/2 with invalid data returns error changeset" do
+      evento = evento_fixture()
+      assert {:error, %Ecto.Changeset{}} = Monitoramento.update_evento(evento, @invalid_attrs)
+      assert evento == Monitoramento.get_evento!(evento.id)
+    end
+
+    test "delete_evento/1 deletes the evento" do
+      evento = evento_fixture()
+      assert {:ok, %Evento{}} = Monitoramento.delete_evento(evento)
+      assert_raise Ecto.NoResultsError, fn -> Monitoramento.get_evento!(evento.id) end
+    end
+
+    test "change_evento/1 returns a evento changeset" do
+      evento = evento_fixture()
+      assert %Ecto.Changeset{} = Monitoramento.change_evento(evento)
+    end
+  end
 end

@@ -1,0 +1,18 @@
+<.header>
+  Evento <%= @evento.id %>
+  <:subtitle>This is a evento record from your database.</:subtitle>
+  <:actions>
+    <.link href={~p"/eventos/#{@evento}/edit"}>
+      <.button>Editar evento</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="IC Vinculada"><%= @evento.icvinculada %></:item>
+  <:item title="Evento"><%= @evento.evento %></:item>
+  <:item title="Urgencia"><%= @evento.urgencia %></:item>
+  <:item title="Impacto"><%= @evento.impacto %></:item>
+</.list>
+
+<.back navigate={~p"/eventos"}>Voltar para eventos</.back>
