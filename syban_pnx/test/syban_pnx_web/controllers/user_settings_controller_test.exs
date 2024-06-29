@@ -55,7 +55,7 @@ defmodule SybanPnxWeb.UserSettingsControllerTest do
 
       response = html_response(old_password_conn, 200)
       assert response =~ "Settings"
-      assert response =~ "should be at least 12 character(s)"
+      assert response =~ "should be at least 8 character(s)"
       assert response =~ "does not match password"
       assert response =~ "is not valid"
 
