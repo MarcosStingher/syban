@@ -3,10 +3,23 @@ defmodule SybanPnx.Monitoramento.Evento do
   import Ecto.Changeset
 
   schema "eventos" do
-    field :icvinculada, :string
-    field :evento, :string
     field :urgencia, :integer
     field :impacto, :integer
+    field :memRamTotal, :string
+    field :memRamUsada, :string
+    field :memPercentual, :string
+    field :discoTotal, :string
+    field :discoUsado, :string
+    field :discoPercentual, :string
+    field :cpuPercentual, :string
+    field :processLogico, :string
+    field :processFisico, :string
+    field :freqCPU, :string
+    field :gpuUsada, :string
+    field :gpuTemp, :string
+    field :gpuMemTot, :string
+    field :gpuMemUsada, :string
+    field :gpuMemLivre, :string
 
     timestamps(type: :utc_datetime)
   end
