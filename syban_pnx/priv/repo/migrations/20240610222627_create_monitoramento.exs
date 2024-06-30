@@ -4,7 +4,7 @@ defmodule SybanPnx.Repo.Migrations.CreateMonitoramento do
   def change do
     create table(:monitoramento) do
       add :datahora, :utc_datetime, default: fragment("CURRENT_TIMESTAMP"), null: false
-      add :idmaquina, references(:dispositivo, type: :bigint, column: :idmaquina, on_delete: :nothing)
+      add :idmaquina, references(:dispositivo, type: :bigint, column: :id, on_delete: :nothing)
       add :memRamTotal, :decimal, precision: 12, scale: 2
       add :memRamUsada, :decimal, precision: 12, scale: 2
       add :memPercentual, :decimal, precision: 12, scale: 2

@@ -1,29 +1,29 @@
 <div class="mx-auto max-w-sm">
   <.header class="text-center">
-    Log in to account
+    Logue na sua conta
     <:subtitle>
-      Don't have an account?
+      Não tem uma conta?
       <.link navigate={~p"/users/register"} class="font-semibold text-brand hover:underline">
-        Sign up
+        Registre
       </.link>
-      for an account now.
+      uma conta agora.
     </:subtitle>
   </.header>
 
   <.simple_form :let={f} for={@conn.params["user"]} as={:user} action={~p"/users/log_in"}>
     <.error :if={@error_message}><%= @error_message %></.error>
 
-    <.input field={f[:email]} type="email" label="Email" required />
-    <.input field={f[:password]} type="password" label="Password" required />
+    <.input field={f[:email]} type="email" label="Email" requerido />
+    <.input field={f[:password]} type="password" label="Senha" requerida />
 
     <:actions :let={f}>
-      <.input field={f[:remember_me]} type="checkbox" label="Keep me logged in" />
+      <.input field={f[:remember_me]} type="checkbox" label="Manter-se conectado" />
       <.link href={~p"/users/reset_password"} class="text-sm font-semibold">
-        Forgot your password?
+        Esqueceu sua senha?
       </.link>
     </:actions>
     <:actions>
-      <.button phx-disable-with="Logging in..." class="w-full">
+      <.button phx-disable-with="Logando..." class="w-full">
         Log in <span aria-hidden="true">→</span>
       </.button>
     </:actions>

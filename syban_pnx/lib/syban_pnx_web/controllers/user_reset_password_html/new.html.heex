@@ -1,20 +1,20 @@
 <div class="mx-auto max-w-sm">
   <.header class="text-center">
-    Forgot your password?
-    <:subtitle>We'll send a password reset link to your inbox</:subtitle>
+    Esqueceu sua senha?
+    <:subtitle>Nós enviaremos um link para resetar a senha no seu inbox</:subtitle>
   </.header>
 
   <.simple_form :let={f} for={@conn.params["user"]} as={:user} action={~p"/users/reset_password"}>
     <.input field={f[:email]} type="email" placeholder="Email" required />
     <:actions>
-      <.button phx-disable-with="Sending..." class="w-full">
-        Send password reset instructions
+      <.button phx-disable-with="Enviando..." class="w-full">
+        Enviar instruções para resetar a senha
       </.button>
     </:actions>
   </.simple_form>
 
   <p class="text-center text-sm mt-4">
-    <.link href={~p"/users/register"}>Register</.link>
-    | <.link href={~p"/users/log_in"}>Log in</.link>
+    <.link href={~p"/users/register"}>Registro</.link>
+    | <.link href={~p"/users/log_in"}>Login</.link>
   </p>
 </div>
