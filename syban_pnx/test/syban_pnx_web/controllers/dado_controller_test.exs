@@ -23,7 +23,8 @@ defmodule SybanPnxWeb.DadoControllerTest do
     gpuTemp: "120.5",
     gpuMemTot: "120.5",
     gpuMemUsada: "120.5",
-    gpuemLivre: "120.5"
+    gpuemLivre: "120.5",
+    idevento: 1
   }
   @update_attrs %{
     datahora: ~U[2024-06-10 22:26:00Z],
@@ -43,9 +44,10 @@ defmodule SybanPnxWeb.DadoControllerTest do
     gpuTemp: "456.7",
     gpuMemTot: "456.7",
     gpuMemUsada: "456.7",
-    gpuMemLivre: "456.7"
+    gpuMemLivre: "456.7",
+    idevento: 1
   }
-  @invalid_attrs %{datahora: nil, idmaquina: nil, memRamTotal: nil, memRamUsada: nil, memPercentual: nil, discoTotal: nil, discousado: nil, discoPercentual: nil, cpuPercentual: nil, processLogico: nil, processFisico: nil, freqCPU: nil, gpuNome: nil, gpuUsada: nil, gpuTemp: nil, gpuMemTot: nil, gpuMemUsada: nil, gpuMemLivre: nil}
+  @invalid_attrs %{datahora: nil, idmaquina: nil, memRamTotal: nil, memRamUsada: nil, memPercentual: nil, discoTotal: nil, discousado: nil, discoPercentual: nil, cpuPercentual: nil, processLogico: nil, processFisico: nil, freqCPU: nil, gpuNome: nil, gpuUsada: nil, gpuTemp: nil, gpuMemTot: nil, gpuMemUsada: nil, gpuMemLivre: nil, idevento: nil}
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
@@ -84,7 +86,8 @@ defmodule SybanPnxWeb.DadoControllerTest do
                "ProcessFisico" => 42,
                "ProcessLogico" => 42,
                "datahora" => "2024-06-09T22:26:00Z",
-               "idmaquina" => 1
+               "idmaquina" => 1,
+               "idevento" => 1
              } = json_response(conn, 200)["data"]
     end
 
@@ -122,7 +125,8 @@ defmodule SybanPnxWeb.DadoControllerTest do
                "ProcessFisico" => 43,
                "ProcessLogico" => 43,
                "datahora" => "2024-06-10T22:26:00Z",
-               "idmaquina" => 2
+               "idmaquina" => 2,
+               "idevento" => 1
              } = json_response(conn, 200)["data"]
     end
 

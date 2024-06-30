@@ -21,6 +21,7 @@ defmodule SybanPnx.Monitoramento.Dado do
     field :gpuMemTot, :decimal
     field :gpuMemUsada, :decimal
     field :gpuMemLivre, :decimal
+    field :idevento, :integer, default: 1
 
     timestamps(type: :utc_datetime)
   end
@@ -28,7 +29,7 @@ defmodule SybanPnx.Monitoramento.Dado do
   @doc false
   def changeset(dado, attrs) do
     dado
-    |> cast(attrs, [:datahora, :idmaquina, :memRamTotal, :memRamUsada, :memPercentual, :discoTotal, :discoUsado, :discoPercentual, :cpuPercentual, :processLogico, :processFisico, :freqCPU, :gpuNome, :gpuUsada, :gpuTemp, :gpuMemTot, :gpuMemUsada, :gpuMemLivre])
-    |> validate_required([:datahora, :idmaquina, :memRamTotal, :memRamUsada, :memPercentual, :discoTotal, :discoUsado, :discoPercentual, :cpuPercentual, :processLogico, :processFisico, :freqCPU, :gpuNome, :gpuUsada, :gpuTemp, :gpuMemTot, :gpuMemUsada, :gpuMemLivre])
+    |> cast(attrs, [:datahora, :idmaquina, :memRamTotal, :memRamUsada, :memPercentual, :discoTotal, :discoUsado, :discoPercentual, :cpuPercentual, :processLogico, :processFisico, :freqCPU, :gpuNome, :gpuUsada, :gpuTemp, :gpuMemTot, :gpuMemUsada, :gpuMemLivre, :idevento])
+    |> validate_required([:datahora, :idmaquina, :memRamTotal, :memRamUsada, :memPercentual, :discoTotal, :discoUsado, :discoPercentual, :cpuPercentual, :processLogico, :processFisico, :freqCPU, :gpuNome, :gpuUsada, :gpuTemp, :gpuMemTot, :gpuMemUsada, :gpuMemLivre, :idevento])
   end
 end

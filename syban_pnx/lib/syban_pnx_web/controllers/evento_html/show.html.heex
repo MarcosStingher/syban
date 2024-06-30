@@ -3,16 +3,45 @@
   <:subtitle>This is a evento record from your database.</:subtitle>
   <:actions>
     <.link href={~p"/eventos/#{@evento}/edit"}>
-      <.button>Editar evento</.button>
+      <.button>Edit evento</.button>
     </.link>
   </:actions>
 </.header>
 
 <.list>
-  <:item title="IC Vinculada"><%= @evento.icvinculada %></:item>
-  <:item title="Evento"><%= @evento.evento %></:item>
-  <:item title="Urgencia"><%= @evento.urgencia %></:item>
-  <:item title="Impacto"><%= @evento.impacto %></:item>
+  <:item title="Memramusada"><%= @evento.memRamUsada %></:item>
+  <:item title="Memramusadaurgencia"><%= @evento.memRamUsadaUrgencia %></:item>
+  <:item title="Memramusadaimpacto"><%= @evento.memRamUsadaImpacto %></:item>
+  <:item title="Mempercentual"><%= @evento.memPercentual %></:item>
+  <:item title="Mempercentualurgencia"><%= @evento.memPercentualUrgencia %></:item>
+  <:item title="Mempercentualimpacto"><%= @evento.memPercentualImpacto %></:item>
+  <:item title="Discousado"><%= @evento.discoUsado %></:item>
+  <:item title="Discousadourgencia"><%= @evento.discoUsadoUrgencia %></:item>
+  <:item title="Discousadoimpacto"><%= @evento.discoUsadoImpacto %></:item>
+  <:item title="Discopercentual"><%= @evento.discoPercentual %></:item>
+  <:item title="Discopercentualurgencia"><%= @evento.discoPercentualUrgencia %></:item>
+  <:item title="Discopercentualimpacto"><%= @evento.discoPercentualImpacto %></:item>
+  <:item title="Cpupercentual"><%= @evento.cpuPercentual %></:item>
+  <:item title="Cpupercentualurgencia"><%= @evento.cpuPercentualUrgencia %></:item>
+  <:item title="Cpupercentualimpacto"><%= @evento.cpuPercentualImpacto %></:item>
+  <:item title="Processlogico"><%= @evento.processLogico %></:item>
+  <:item title="Processlogicourgencia"><%= @evento.processLogicoUrgencia %></:item>
+  <:item title="Processlogicoimpacto"><%= @evento.processLogicoImpacto %></:item>
+  <:item title="Processfisico"><%= @evento.processFisico %></:item>
+  <:item title="Processfisicourgencia"><%= @evento.processFisicoUrgencia %></:item>
+  <:item title="Processfisicoimpacto"><%= @evento.processFisicoImpacto %></:item>
+  <:item title="Freqcpu"><%= @evento.freqCPU %></:item>
+  <:item title="Freqcpuurgencia"><%= @evento.freqCPUUrgencia %></:item>
+  <:item title="Freqcpuimpacto"><%= @evento.freqCPUImpacto %></:item>
+  <:item title="Gpuusada"><%= @evento.gpuUsada %></:item>
+  <:item title="Gpuusadaurgencia"><%= @evento.gpuUsadaUrgencia %></:item>
+  <:item title="Gpuusadaimpacto"><%= @evento.gpuUsadaImpacto %></:item>
+  <:item title="Gputemp"><%= @evento.gpuTemp %></:item>
+  <:item title="Gputempurgencia"><%= @evento.gpuTempUrgencia %></:item>
+  <:item title="Gputempimpacto"><%= @evento.gpuTempImpacto %></:item>
+  <:item title="Gpumemusada"><%= @evento.gpuMemUsada %></:item>
+  <:item title="Gpumemusadaurgencia"><%= @evento.gpuMemUsadaUrgencia %></:item>
+  <:item title="Gpumemusadaimpacto"><%= @evento.gpuMemUsadaImpacto %></:item>
 </.list>
 
-<.back navigate={~p"/eventos"}>Voltar para eventos</.back>
+<.back navigate={~p"/eventos"}>Back to eventos</.back>

@@ -21,6 +21,7 @@ defmodule SybanPnx.Repo.Migrations.CreateMonitoramento do
       add :gpuMemTot, :decimal, precision: 8, scale: 2
       add :gpuMemUsada, :decimal, precision: 8, scale: 2
       add :gpuMemLivre, :decimal, precision: 8, scale: 2
+      add :idevento, :integer, default: 1
 
       timestamps(type: :utc_datetime)
     end

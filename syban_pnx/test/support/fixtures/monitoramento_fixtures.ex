@@ -28,27 +28,11 @@ defmodule SybanPnx.MonitoramentoFixtures do
         processFisico: 42,
         processLogico: 42,
         datahora: ~U[2024-06-09 22:26:00Z],
-        idmaquina: 1
+        idmaquina: 1,
+        idevento: 1
       })
       |> SybanPnx.Monitoramento.create_dado()
 
     dado
-  end
-
-  @doc """
-  Generate a evento.
-  """
-  def evento_fixture(attrs \\ %{}) do
-    {:ok, evento} =
-      attrs
-      |> Enum.into(%{
-        evento: "some evento",
-        icvinculada: "cpuPercentual",
-        impacto: 42,
-        urgencia: 42
-      })
-      |> SybanPnx.Monitoramento.create_evento()
-
-    evento
   end
 end
