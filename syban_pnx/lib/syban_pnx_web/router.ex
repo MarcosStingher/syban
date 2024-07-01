@@ -29,6 +29,7 @@ defmodule SybanPnxWeb.Router do
     pipe_through :api
     get "/monitoramento", DadoController, :index
     post "/monitoramento", DadoController, :create
+    get "/eventos", EventoController, :index
   end
 
   scope "/", SybanPnxWeb do

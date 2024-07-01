@@ -2,40 +2,72 @@
   <.error :if={@changeset.action}>
     Oops, something went wrong! Please check the errors below.
   </.error>
-  <.input field={f[:memRamUsada]} type="text" label="Memramusada" />
-  <.input field={f[:memRamUsadaUrgencia]} type="number" label="Memramusadaurgencia" />
-  <.input field={f[:memRamUsadaImpacto]} type="number" label="Memramusadaimpacto" />
-  <.input field={f[:memPercentual]} type="text" label="Mempercentual" />
-  <.input field={f[:memPercentualUrgencia]} type="number" label="Mempercentualurgencia" />
-  <.input field={f[:memPercentualImpacto]} type="number" label="Mempercentualimpacto" />
-  <.input field={f[:discoUsado]} type="text" label="Discousado" />
-  <.input field={f[:discoUsadoUrgencia]} type="number" label="Discousadourgencia" />
-  <.input field={f[:discoUsadoImpacto]} type="number" label="Discousadoimpacto" />
-  <.input field={f[:discoPercentual]} type="text" label="Discopercentual" />
-  <.input field={f[:discoPercentualUrgencia]} type="number" label="Discopercentualurgencia" />
-  <.input field={f[:discoPercentualImpacto]} type="number" label="Discopercentualimpacto" />
-  <.input field={f[:cpuPercentual]} type="text" label="Cpupercentual" />
-  <.input field={f[:cpuPercentualUrgencia]} type="number" label="Cpupercentualurgencia" />
-  <.input field={f[:cpuPercentualImpacto]} type="number" label="Cpupercentualimpacto" />
-  <.input field={f[:processLogico]} type="text" label="Processlogico" />
-  <.input field={f[:processLogicoUrgencia]} type="number" label="Processlogicourgencia" />
-  <.input field={f[:processLogicoImpacto]} type="number" label="Processlogicoimpacto" />
-  <.input field={f[:processFisico]} type="text" label="Processfisico" />
-  <.input field={f[:processFisicoUrgencia]} type="number" label="Processfisicourgencia" />
-  <.input field={f[:processFisicoImpacto]} type="number" label="Processfisicoimpacto" />
-  <.input field={f[:freqCPU]} type="text" label="Freqcpu" />
-  <.input field={f[:freqCPUUrgencia]} type="number" label="Freqcpuurgencia" />
-  <.input field={f[:freqCPUImpacto]} type="number" label="Freqcpuimpacto" />
-  <.input field={f[:gpuUsada]} type="text" label="Gpuusada" />
-  <.input field={f[:gpuUsadaUrgencia]} type="number" label="Gpuusadaurgencia" />
-  <.input field={f[:gpuUsadaImpacto]} type="number" label="Gpuusadaimpacto" />
-  <.input field={f[:gpuTemp]} type="text" label="Gputemp" />
-  <.input field={f[:gpuTempUrgencia]} type="number" label="Gputempurgencia" />
-  <.input field={f[:gpuTempImpacto]} type="number" label="Gputempimpacto" />
-  <.input field={f[:gpuMemUsada]} type="text" label="Gpumemusada" />
-  <.input field={f[:gpuMemUsadaUrgencia]} type="number" label="Gpumemusadaurgencia" />
-  <.input field={f[:gpuMemUsadaImpacto]} type="number" label="Gpumemusadaimpacto" />
+  <div class="section">
+    <.input field={f[:memRamUsada]} type="text" label="Memória Ram Usada" />
+    <.input field={f[:memRamUsadaUrgencia]} type="number" label="Urgência" />
+    <.input field={f[:memRamUsadaImpacto]} type="number" label="Impacto" />
+  </div>
+
+  <div class="section">
+  <.input field={f[:memPercentual]} type="text" label="Memória Percentual" />
+  <.input field={f[:memPercentualUrgencia]} type="number" label="Urgência" />
+  <.input field={f[:memPercentualImpacto]} type="number" label="Impacto" />
+  </div>
+
+  <div class="section">
+  <.input field={f[:discoUsado]} type="text" label="Disco Usado" />
+  <.input field={f[:discoUsadoUrgencia]} type="number" label="Urgência" />
+  <.input field={f[:discoUsadoImpacto]} type="number" label="Impacto" />
+  </div>
+
+  <div class="section">
+  <.input field={f[:discoPercentual]} type="text" label="Percentual Disco" />
+  <.input field={f[:discoPercentualUrgencia]} type="number" label="Urgência" />
+  <.input field={f[:discoPercentualImpacto]} type="number" label="Impacto" />
+  </div>
+
+  <div class="section">
+  <.input field={f[:cpuPercentual]} type="text" label="CPU Percentual" />
+  <.input field={f[:cpuPercentualUrgencia]} type="number" label="Urgência" />
+  <.input field={f[:cpuPercentualImpacto]} type="number" label="Impacto" />
+  </div>
+
+  <div class="section">
+  <.input field={f[:processLogico]} type="text" label="Processo Lógico" />
+  <.input field={f[:processLogicoUrgencia]} type="number" label="Urgência" />
+  <.input field={f[:processLogicoImpacto]} type="number" label="Impacto" />
+  </div>
+
+  <div class="section">
+  <.input field={f[:processFisico]} type="text" label="Processo Físico" />
+  <.input field={f[:processFisicoUrgencia]} type="number" label="Urgência" />
+  <.input field={f[:processFisicoImpacto]} type="number" label="Impacto" />
+  </div>
+
+  <div class="section">
+  <.input field={f[:freqCPU]} type="text" label="Frequência CPU" />
+  <.input field={f[:freqCPUUrgencia]} type="number" label="Urgência" />
+  <.input field={f[:freqCPUImpacto]} type="number" label="Impacto" />
+  </div>
+
+  <div class="section">
+  <.input field={f[:gpuUsada]} type="text" label="GPU Usada" />
+  <.input field={f[:gpuUsadaUrgencia]} type="number" label="Urgência" />
+  <.input field={f[:gpuUsadaImpacto]} type="number" label="Impacto" />
+  </div>
+
+  <div class="section">
+  <.input field={f[:gpuTemp]} type="text" label="GPU Temperatura" />
+  <.input field={f[:gpuTempUrgencia]} type="number" label="Urgência" />
+  <.input field={f[:gpuTempImpacto]} type="number" label="Impacto" />
+  </div>
+
+  <div class="section">
+  <.input field={f[:gpuMemUsada]} type="text" label="GPU Memória Usada" />
+  <.input field={f[:gpuMemUsadaUrgencia]} type="number" label="Urgência" />
+  <.input field={f[:gpuMemUsadaImpacto]} type="number" label="Impacto" />
+  </div>
   <:actions>
-    <.button>Save Evento</.button>
+    <.button>Salvar Eventos</.button>
   </:actions>
 </.simple_form>
