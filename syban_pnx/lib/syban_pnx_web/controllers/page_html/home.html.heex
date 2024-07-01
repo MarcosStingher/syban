@@ -92,293 +92,315 @@
                 width: 100% !important;
                 height: auto !important;
             }
+            #machineSelect {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #34495e;
+    border-radius: 5px;
+    background-color: #ecf0f1;
+    color: #34495e;
+    font-size: 16px;
+    width: 100%;
+    max-width: 300px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#machineSelect:focus {
+    border-color: #2980b9;
+    box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);
+    outline: none;
+}
+
         </style>
     </head>
     
 <body>
-    <div class="sidebar">
-        <h2>Syban</h2>
-        <a href="#">Dashboard</a>
-        <a href="/dispositivo">Dispositivo</a>
-        <a href="/Relatorio">Relatorio</a>
-        <a href="#">Suporte</a>
-    </div>
-    <div class="main-content">
-        <div class="chart-container">
-            <div class="chart-box">
-                <canvas id="ramUsageChart"></canvas>
-            </div>
-            <div class="chart-box doughnut-chart">
-                <canvas id="diskUsageChart"></canvas>
-            </div>
-            <div class="chart-box">
-                <canvas id="cpuUsageChart"></canvas>
-            </div>
-            <div class="chart-box">
-                <canvas id="gpuUsageChart"></canvas>
-            </div>
-            <div class="chart-box">
-                <canvas id="gpuMemoryChart"></canvas>
-            </div>
+<div class="sidebar">
+    <h2>Syban</h2>
+    <a href="#">Dashboard</a>
+    <a href="/dispositivo">Dispositivo</a>
+    <a href="/Relatorio">Relatorio</a>
+    <a href="#">Suporte</a>
+</div>
+<div class="main-content">
+    <select id="machineSelect" onchange="updateCharts()">
+        
+    </select>
+    <div class="chart-container">
+        <div class="chart-box">
+            <canvas id="ramUsageChart"></canvas>
+        </div>
+        <div class="chart-box doughnut-chart">
+            <canvas id="diskUsageChart"></canvas>
+        </div>
+        <div class="chart-box">
+            <canvas id="cpuUsageChart"></canvas>
+        </div>
+        <div class="chart-box">
+            <canvas id="gpuUsageChart"></canvas>
+        </div>
+        <div class="chart-box">
+            <canvas id="gpuMemoryChart"></canvas>
         </div>
     </div>
+</div>
+
     
-    <script>
-        let ramUsageChart;
-        let diskUsageChart;
-        let cpuUsageChart;
-        let gpuUsageChart;
-        let gpuMemoryChart;
+<script>
+    let ramUsageChart;
+    let diskUsageChart;
+    let cpuUsageChart;
+    let gpuUsageChart;
+    let gpuMemoryChart;
+    let allData = [];
     
-        async function fetchData() {
-            const response = await fetch("http://localhost:4000/api/monitoramento");
-            const result = await response.json();
-            return result.data;
-        }
+    async function fetchData() {
+        const response = await fetch("http://localhost:4000/api/monitoramento");
+        const result = await response.json();
+        allData = result.data;
+        populateMachineDropdown();
+        updateCharts();
+    }
     
-        function processData(data) {
-            const labels = data.map(item => new Date(item.datahora).toLocaleString());
-            const memoryUsage = data.map(item => parseFloat(item.memPercentual));
-            const diskTotal = data.map(item => parseFloat(item.discoTotal));
-            const diskUsed = data.map(item => parseFloat(item.discoUsado));
-            const cpuUsage = data.map(item => parseFloat(item.cpuPercentual));
-            const memRamUsada = data.map(item => parseFloat(item.memRamUsada));
-            const memRamTotal = data.map(item => parseFloat(item.memRamTotal));
-            const gpuUsada = data.map(item => parseFloat(item.gpuUsada));
-            const gpuTemp = data.map(item => parseFloat(item.gpuTemp));
-            const gpuMemUsada = data.map(item => parseFloat(item.gpuMemUsada));
-            const gpuMemTot = data.map(item => parseFloat(item.gpuMemTot));
-            const gpuMemLivre = data.map(item => parseFloat(item.gpuMemLivre));
+    function populateMachineDropdown() {
+        const machineSelect = document.getElementById('machineSelect');
+        const machineIds = [...new Set(allData.map(item => item.idmaquina))];
     
-            return { labels, memoryUsage, diskTotal, diskUsed, cpuUsage, memRamUsada, memRamTotal, gpuUsada, gpuTemp, gpuMemUsada, gpuMemTot, gpuMemLivre };
-        }
+        machineIds.forEach(id => {
+            const option = document.createElement('option');
+            option.value = id;
+            option.text = `Máquina ${id}`;
+            machineSelect.appendChild(option);
+        });
+    }
     
-        async function renderCharts() {
-            const data = await fetchData();
-            const { labels, memoryUsage, diskTotal, diskUsed, cpuUsage, memRamUsada, memRamTotal, gpuUsada, gpuTemp, gpuMemUsada, gpuMemTot, gpuMemLivre } = processData(data);
+    function processData(machineId) {
+        const filteredData = allData.filter(item => item.idmaquina == machineId);
+        const labels = filteredData.map(item => new Date(item.datahora).toLocaleString());
+        const memoryUsage = filteredData.map(item => parseFloat(item.memPercentual));
+        const diskTotal = filteredData.map(item => parseFloat(item.discoTotal));
+        const diskUsed = filteredData.map(item => parseFloat(item.discoUsado));
+        const cpuUsage = filteredData.map(item => parseFloat(item.cpuPercentual));
+        const memRamUsada = filteredData.map(item => parseFloat(item.memRamUsada));
+        const memRamTotal = filteredData.map(item => parseFloat(item.memRamTotal));
+        const gpuUsada = filteredData.map(item => parseFloat(item.gpuUsada));
+        const gpuTemp = filteredData.map(item => parseFloat(item.gpuTemp));
+        const gpuMemUsada = filteredData.map(item => parseFloat(item.gpuMemUsada));
+        const gpuMemTot = filteredData.map(item => parseFloat(item.gpuMemTot));
+        const gpuMemLivre = filteredData.map(item => parseFloat(item.gpuMemLivre));
     
-            // Configuração do Gráfico de Linha para Uso de Memória RAM com mudança de cor condicional
-            const ramUsageData = {
-                labels: labels,
-                datasets: [{
-                    label: 'Uso de Memória RAM (%)',
-                    data: memoryUsage,
-                    fill: false,
-                    borderColor: context => {
-                        let value = context.dataset.data[context.dataIndex];
-                        return value >= 85 ? 'rgb(255, 99, 132)' : 'rgb(75, 192, 192)';
-                    },
-                    backgroundColor: context => {
-                        let value = context.dataset.data[context.dataIndex];
-                        return value >= 85 ? 'rgba(255, 99, 132, 0.2)' : 'rgba(75, 192, 192, 0.2)';
-                    },
-                    tension: 0.1
-                }]
-            };
+        return { labels, memoryUsage, diskTotal, diskUsed, cpuUsage, memRamUsada, memRamTotal, gpuUsada, gpuTemp, gpuMemUsada, gpuMemTot, gpuMemLivre };
+    }
     
-            const ramUsageConfig = {
-                type: 'line',
-                data: ramUsageData,
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            };
+    function updateCharts() {
+        const machineId = document.getElementById('machineSelect').value;
+        renderCharts(machineId);
+    }
     
-            // Configuração do Gráfico de Pizza para Uso de Disco (usando apenas o último conjunto de dados)
-            const lastDiskUsed = diskUsed[diskUsed.length - 1];
-            const lastDiskTotal = diskTotal[diskTotal.length - 1];
-            const diskUsageData = {
-                labels: ['Disco Usado', 'Disco Livre'],
-                datasets: [{
-                    label: 'Uso de Disco (GB)',
-                    data: [lastDiskUsed, lastDiskTotal - lastDiskUsed],
-                    backgroundColor: lastDiskUsed / lastDiskTotal >= 0.85 ? ['rgba(255, 99, 132, 0.5)', 'rgba(100, 206, 86, 0.5)'] : ['rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)'],
-                    borderColor: lastDiskUsed / lastDiskTotal >= 0.85 ? ['rgba(255, 100, 100, 1)', 'rgba(100, 206, 86, 1)'] : ['rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
-                    borderWidth: 1
-                    
-                }]
-            };
+    function renderCharts(machineId) {
+        const data = processData(machineId);
+        const { labels, memoryUsage, diskTotal, diskUsed, cpuUsage, memRamUsada, memRamTotal, gpuUsada, gpuTemp, gpuMemUsada, gpuMemTot, gpuMemLivre } = data;
     
-            const diskUsageConfig = {
-                type: 'doughnut',
-                data: diskUsageData,
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    if (context.raw !== null) {
-                                        label += context.raw + ' GB';
-                                    }
-                                    return label;
-                                }
-                            }
-                        },
-                        datalabels: {
-                            formatter: (value, context) => {
-                                let sum = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
-                                let percentage = (value * 100 / sum).toFixed(2) + '%';
-                                return percentage;
-                            },
-                            color: '#36A2EB',
-                            font: {
-                                weight: 'bold',
-                                size: 16,
-                            }
-                        }
-                    }
-                }
-            };
-    
-            // Configuração do Gráfico de Barras para Uso da CPU
-            const cpuUsageData = {
-                labels: labels,
-                datasets: [{
-                    label: 'Uso de CPU (%)',
-                    data: cpuUsage,
-                    backgroundColor: cpuUsage.map(value => value > 90 ? 'rgba(255, 99, 132, 0.2)' : 'rgba(75, 192, 192, 0.2)'),
-                    borderColor: cpuUsage.map(value => value > 90 ? 'rgba(255, 99, 132, 1)' : 'rgba(75, 192, 192, 1)'),
-                    borderWidth: 1
-                }]
-            };
-    
-            const cpuUsageConfig = {
-                type: 'bar',
-                data: cpuUsageData,
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            };
-    
-            // Configuração do Gráfico de Linha para Uso da GPU e Temperatura
-            const gpuUsageData = {
-                labels: labels,
-                datasets: [
-                    {
-                        label: 'Uso de GPU (%)',
-                        data: gpuUsada,
-                        fill: false,
-                        borderColor: 'rgb(54, 162, 235)',
-                        tension: 0.1
-                    },
-                    {
-                        label: 'Temperatura da GPU (°C)',
-                        data: gpuTemp,
-                        fill: false,
-                        borderColor: 'rgb(255, 159, 64)',
-                        tension: 0.1
-                    }
-                ]
-            };
-    
-            const gpuUsageConfig = {
-                type: 'line',
-                data: gpuUsageData,
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            };
-    
-            // Configuração do Gráfico de Linha para Uso da Memória da GPU
-            const gpuMemoryData = {
-                labels: labels,
-                datasets: [
-                    {
-                        label: 'Memória da GPU Usada (GB)',
-                        data: gpuMemUsada,
-                        fill: false,
-                        borderColor: 'rgb(153, 102, 255)',
-                        tension: 0.1
-                    },
-                    {
-                        label: 'Memória Total da GPU (GB)',
-                        data: gpuMemTot,
-                        fill: false,
-                        borderColor: 'rgb(75, 192, 192)',
-                        tension: 0.1
-                    },
-                    {
-                        label: 'Memória Livre da GPU (GB)',
-                        data: gpuMemLivre,
-                        fill: false,
-                        borderColor: 'rgb(255, 205, 86)',
-                        tension: 0.1
-                    }
-                ]
-            };
-    
-            const gpuMemoryConfig = {
-                type: 'line',
-                data: gpuMemoryData,
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            };
-    
-            // Se os gráficos já existirem, atualiza os dados; caso contrário, cria os gráficos
-            if (ramUsageChart && diskUsageChart && cpuUsageChart && gpuUsageChart && gpuMemoryChart) {
-                ramUsageChart.data = ramUsageData;
-                ramUsageChart.update();
-                diskUsageChart.data = diskUsageData;
-                diskUsageChart.update();
-                cpuUsageChart.data = cpuUsageData;
-                cpuUsageChart.update();
-                gpuUsageChart.data = gpuUsageData;
-                gpuUsageChart.update();
-                gpuMemoryChart.data = gpuMemoryData;
-                gpuMemoryChart.update();
-            } else {
-                const ramCtx = document.getElementById('ramUsageChart').getContext('2d');
-                ramUsageChart = new Chart(ramCtx, ramUsageConfig);
-    
-                const diskCtx = document.getElementById('diskUsageChart').getContext('2d');
-                diskUsageChart = new Chart(diskCtx, diskUsageConfig);
-    
-                const cpuCtx = document.getElementById('cpuUsageChart').getContext('2d');
-                cpuUsageChart = new Chart(cpuCtx, cpuUsageConfig);
-    
-                const gpuCtx = document.getElementById('gpuUsageChart').getContext('2d');
-                gpuUsageChart = new Chart(gpuCtx, gpuUsageConfig);
-    
-                const gpuMemoryCtx = document.getElementById('gpuMemoryChart').getContext('2d');
-                gpuMemoryChart = new Chart(gpuMemoryCtx, gpuMemoryConfig);
-            }
-        }
-    
-        function startTimer() {
-            setInterval(renderCharts, 60000); // 6000ms = 6 segundos
-        }
-    
-        window.onload = function() {
-            renderCharts(); // Renderiza inicialmente os gráficos
-            startTimer(); // Inicia o timer para atualizar os gráficos a cada 6 segundos
+        // Configuração do Gráfico de Linha para Uso de Memória RAM com mudança de cor condicional
+        const ramUsageData = {
+            labels: labels,
+            datasets: [{
+                label: 'Uso de Memória RAM (%)',
+                data: memoryUsage,
+                fill: false,
+                borderColor: memoryUsage.map(value => value >= 85 ? 'rgb(255, 99, 132)' : 'rgb(75, 192, 192)'),
+                tension: 0.1
+            }]
         };
+    
+        const ramUsageConfig = {
+            type: 'line',
+            data: ramUsageData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        };
+    
+        // Configuração do Gráfico de Pizza para Uso de Disco
+        const lastDiskUsed = diskUsed[diskUsed.length - 1];
+        const lastDiskTotal = diskTotal[diskTotal.length - 1];
+        const diskUsageData = {
+            labels: ['Disco Usado', 'Disco Livre'],
+            datasets: [{
+                data: [lastDiskUsed, lastDiskTotal - lastDiskUsed],
+                backgroundColor: lastDiskUsed / lastDiskTotal >= 0.85 ? ['rgba(255, 99, 132, 0.2)', 'rgba(255, 206, 86, 0.2)'] : ['rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)'],
+                borderColor: lastDiskUsed / lastDiskTotal >= 0.85 ? ['rgba(255, 99, 132, 1)', 'rgba(255, 206, 86, 1)'] : ['rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
+                borderWidth: 1
+            }]
+        };
+    
+        const diskUsageConfig = {
+            type: 'doughnut',
+            data: diskUsageData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    datalabels: {
+                        formatter: (value, context) => {
+                            let sum = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                            let percentage = (value * 100 / sum).toFixed(2) + '%';
+                            return percentage;
+                        },
+                        color: '#36A2EB',
+                        font: {
+                            weight: 'bold',
+                            size: 16,
+                        }
+                    }
+                }
+            }
+        };
+    
+        // Configuração do Gráfico de Barras para Uso da CPU
+        const cpuUsageData = {
+            labels: labels,
+            datasets: [{
+                label: 'Uso de CPU (%)',
+                data: cpuUsage,
+                backgroundColor: cpuUsage.map(value => value > 90 ? 'rgba(255, 99, 132, 0.2)' : 'rgba(75, 192, 192, 0.2)'),
+                borderColor: cpuUsage.map(value => value > 90 ? 'rgba(255, 99, 132, 1)' : 'rgba(75, 192, 192, 1)'),
+                borderWidth: 1
+            }]
+        };
+    
+        const cpuUsageConfig = {
+            type: 'bar',
+            data: cpuUsageData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        };
+    
+        // Configuração do Gráfico de Linha para Uso da GPU e Temperatura
+        const gpuUsageData = {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Uso de GPU (%)',
+                    data: gpuUsada,
+                    fill: false,
+                    borderColor: 'rgb(54, 162, 235)',
+                    tension: 0.1
+                },
+                {
+                    label: 'Temperatura da GPU (°C)',
+                    data: gpuTemp,
+                    fill: false,
+                    borderColor: 'rgb(255, 159, 64)',
+                    tension: 0.1
+                }
+            ]
+        };
+    
+        const gpuUsageConfig = {
+            type: 'line',
+            data: gpuUsageData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        };
+    
+        // Configuração do Gráfico de Linha para Uso da Memória da GPU
+        const gpuMemoryData = {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Memória da GPU Usada (GB)',
+                    data: gpuMemUsada,
+                    fill: false,
+                    borderColor: 'rgb(153, 102, 255)',
+                    tension: 0.1
+                },
+                {
+                    label: 'Memória Total da GPU (GB)',
+                    data: gpuMemTot,
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                },
+                {
+                    label: 'Memória Livre da GPU (GB)',
+                    data: gpuMemLivre,
+                    fill: false,
+                    borderColor: 'rgb(255, 205, 86)',
+                    tension: 0.1
+                }
+            ]
+        };
+    
+        const gpuMemoryConfig = {
+            type: 'line',
+            data: gpuMemoryData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        };
+    
+        // Se os gráficos já existirem, atualiza os dados; caso contrário, cria os gráficos
+        if (ramUsageChart && diskUsageChart && cpuUsageChart && gpuUsageChart && gpuMemoryChart) {
+            ramUsageChart.data = ramUsageData;
+            ramUsageChart.update();
+            diskUsageChart.data = diskUsageData;
+            diskUsageChart.update();
+            cpuUsageChart.data = cpuUsageData;
+            cpuUsageChart.update();
+            gpuUsageChart.data = gpuUsageData;
+            gpuUsageChart.update();
+            gpuMemoryChart.data = gpuMemoryData;
+            gpuMemoryChart.update();
+        } else {
+            const ramCtx = document.getElementById('ramUsageChart').getContext('2d');
+            ramUsageChart = new Chart(ramCtx, ramUsageConfig);
+    
+            const diskCtx = document.getElementById('diskUsageChart').getContext('2d');
+            diskUsageChart = new Chart(diskCtx, diskUsageConfig);
+    
+            const cpuCtx = document.getElementById('cpuUsageChart').getContext('2d');
+            cpuUsageChart = new Chart(cpuCtx, cpuUsageConfig);
+    
+            const gpuCtx = document.getElementById('gpuUsageChart').getContext('2d');
+            gpuUsageChart = new Chart(gpuCtx, gpuUsageConfig);
+    
+            const gpuMemoryCtx = document.getElementById('gpuMemoryChart').getContext('2d');
+            gpuMemoryChart = new Chart(gpuMemoryCtx, gpuMemoryConfig);
+        }
+    }
+
+    function startTimer() {
+        setInterval(updateCharts, 60000); // 6000ms = 6 segundos
+    }
+    
+    window.onload = function() {
+        fetchData();
+        startTimer(); 
+    };
     </script>
     
+
     
 </body>
 </html>
