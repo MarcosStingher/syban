@@ -1,0 +1,29 @@
+<div class="mx-auto max-w-sm">
+  <.header class="text-center">
+    Resetar Senha
+  </.header>
+
+  <.simple_form :let={f} for={@changeset} action={~p"/users/reset_password/#{@token}"}>
+    <.error :if={@changeset.action}>
+      Oops, algo deu errado! Por favor, cheque os erros abaixo.
+    </.error>
+
+    <.input field={f[:password]} type="password" label="Nova Senha" requerida />
+    <.input
+      field={f[:password_confirmation]}
+      type="password"
+      label="Confirmar nova senha"
+      required
+    />
+    <:actions>
+      <.button phx-disable-with="Resetando..." class="w-full">
+        Resetar Senha
+      </.button>
+    </:actions>
+  </.simple_form>
+
+  <p class="text-center text-sm mt-4">
+    <.link href={~p"/users/register"}>Registro</.link>
+    | <.link href={~p"/users/log_in"}>Login</.link>
+  </p>
+</div>

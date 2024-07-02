@@ -9,7 +9,6 @@ defmodule SybanPnxWeb.RAMUsageLive.FormComponent do
     <div>
       <.header>
         <%= @title %>
-        <:subtitle>Use this form to manage ram_usage records in your database.</:subtitle>
       </.header>
 
       <.simple_form

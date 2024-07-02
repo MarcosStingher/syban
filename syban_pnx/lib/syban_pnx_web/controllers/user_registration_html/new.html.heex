@@ -1,0 +1,25 @@
+<div class="mx-auto max-w-sm">
+  <.header class="text-center">
+    Registrar uma conta
+    <:subtitle>
+      Já esta registrado?
+      <.link navigate={~p"/users/log_in"} class="font-semibold text-brand hover:underline">
+        Logue
+      </.link>
+      na sua conta agora.
+    </:subtitle>
+  </.header>
+
+  <.simple_form :let={f} for={@changeset} action={~p"/users/register"}>
+    <.error :if={@changeset.action == :insert}>
+      Oops, algo deu errado! Por favor, cheque os erros abaixo.
+    </.error>
+
+    <.input field={f[:email]} type="email" label="Email" requerido />
+    <.input field={f[:password]} type="password" label="Senha" requerida />
+
+    <:actions>
+      <.button phx-disable-with="Criando conta..." class="w-full">Criar uma conta</.button>
+    </:actions>
+  </.simple_form>
+</div>

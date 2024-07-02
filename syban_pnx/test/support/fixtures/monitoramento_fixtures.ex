@@ -28,7 +28,8 @@ defmodule SybanPnx.MonitoramentoFixtures do
         processFisico: 42,
         processLogico: 42,
         datahora: ~U[2024-06-09 22:26:00Z],
-        idmaquina: 1
+        idmaquina: 1,
+        idevento: 1
       })
       |> SybanPnx.Monitoramento.create_dado()
 

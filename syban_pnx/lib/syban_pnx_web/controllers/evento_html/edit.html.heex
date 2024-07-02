@@ -1,0 +1,8 @@
+<.header>
+  Editando Eventos
+  <:subtitle>Use essa página para configurar os eventos da sua base de dados.</:subtitle>
+</.header>
+
+<.evento_form changeset={@changeset} action={~p"/eventos/#{@evento}"} />
+
+<.back navigate={~p"/eventos/1"}>Voltar para listagem de eventos</.back>

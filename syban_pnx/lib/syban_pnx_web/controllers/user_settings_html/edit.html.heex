@@ -1,0 +1,63 @@
+<.header class="text-center">
+  Configurações da conta
+  <:subtitle>Gerencie as configurações de email e senha da sua conta</:subtitle>
+</.header>
+
+<div class="space-y-12 divide-y">
+  <div>
+    <.simple_form :let={f} for={@email_changeset} action={~p"/users/settings"} id="update_email">
+      <.error :if={@email_changeset.action}>
+        Oops, algo deu errado! Por favor, cheque os erros abaixo.
+      </.error>
+
+      <input type="hidden" name="action" value="update_email" />
+
+      <.input field={f[:email]} type="email" label="Email" requerido />
+      <.input
+        field={f[:current_password]}
+        name="current_password"
+        type="password"
+        label="Senha atual"
+        required
+        id="current_password_for_email"
+      />
+      <:actions>
+        <.button phx-disable-with="Alterando...">Trocar Email</.button>
+      </:actions>
+    </.simple_form>
+  </div>
+  <div>
+    <.simple_form
+      :let={f}
+      for={@password_changeset}
+      action={~p"/users/settings"}
+      id="update_password"
+    >
+      <.error :if={@password_changeset.action}>
+        Oops, algo deu errado! Por favor, cheque os erros abaixo.
+      </.error>
+
+      <input type="hidden" name="action" value="update_password" />
+
+      <.input field={f[:password]} type="password" label="Nova senha" requerida />
+      <.input
+        field={f[:password_confirmation]}
+        type="password"
+        label="Confirme a nova senha"
+        required
+      />
+
+      <.input
+        field={f[:current_password]}
+        name="current_password"
+        type="password"
+        label="Senha atual"
+        id="current_password_for_password"
+        required
+      />
+      <:actions>
+        <.button phx-disable-with="Alterando...">Trocar Senha</.button>
+      </:actions>
+    </.simple_form>
+  </div>
+</div>

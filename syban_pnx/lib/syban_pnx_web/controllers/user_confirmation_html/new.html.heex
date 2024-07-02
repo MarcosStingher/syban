@@ -1,0 +1,20 @@
+<div class="mx-auto max-w-sm">
+  <.header class="text-center">
+    Nenhuma instrução de confirmação recebida?
+    <:subtitle>Nós mandaremos um novo link de confirmação para o seu inbox</:subtitle>
+  </.header>
+
+  <.simple_form :let={f} for={@conn.params["user"]} as={:user} action={~p"/users/confirm"}>
+    <.input field={f[:email]} type="email" placeholder="Email" required />
+    <:actions>
+      <.button phx-disable-with="Enviando..." class="w-full">
+        Reenviar instruções de confirmação
+      </.button>
+    </:actions>
+  </.simple_form>
+
+  <p class="text-center mt-4">
+    <.link href={~p"/users/register"}>Registro</.link>
+    | <.link href={~p"/users/log_in"}>Login</.link>
+  </p>
+</div>

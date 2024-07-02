@@ -35,7 +35,8 @@ defmodule SybanPnxWeb.DadoJSON do
       gpuTemp: dado.gpuTemp,
       gpuMemTot: dado.gpuMemTot,
       gpuMemUsada: dado.gpuMemUsada,
-      gpuMemLivre: dado.gpuMemLivre
+      gpuMemLivre: dado.gpuMemLivre,
+      idevento: dado.idevento
     }
   end
 end

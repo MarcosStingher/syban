@@ -1,6 +1,8 @@
 defmodule SybanPnxWeb.Router do
   use SybanPnxWeb, :router
 
+  import SybanPnxWeb.UserAuth
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -8,6 +10,7 @@ defmodule SybanPnxWeb.Router do
     plug :put_root_layout, html: {SybanPnxWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :fetch_current_user
   end
 
   pipeline :api do
@@ -15,18 +18,18 @@ defmodule SybanPnxWeb.Router do
   end
 
   scope "/", SybanPnxWeb do
-    pipe_through :browser
+    pipe_through [:browser, :require_authenticated_user]
     get "/", PageController, :home
-    resources "/teste", TesteController, except: [:new, :edit]
     resources "/dispositivo", DispositivoController
     resources "/monitoramento", DadoController, except: [:new, :edit]
+    resources "/eventos", EventoController
   end
 
   scope "/api", SybanPnxWeb do
     pipe_through :api
-    get "/teste", TesteController, :index
     get "/monitoramento", DadoController, :index
     post "/monitoramento", DadoController, :create
+    get "/eventos", EventoController, :index
   end
 
   scope "/", SybanPnxWeb do
@@ -51,5 +54,38 @@ defmodule SybanPnxWeb.Router do
       live_dashboard "/dashboard", metrics: SybanPnxWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
+  end
+
+  ## Authentication routes
+
+  scope "/", SybanPnxWeb do
+    pipe_through [:browser, :redirect_if_user_is_authenticated]
+
+    get "/users/register", UserRegistrationController, :new
+    post "/users/register", UserRegistrationController, :create
+    get "/users/log_in", UserSessionController, :new
+    post "/users/log_in", UserSessionController, :create
+    get "/users/reset_password", UserResetPasswordController, :new
+    post "/users/reset_password", UserResetPasswordController, :create
+    get "/users/reset_password/:token", UserResetPasswordController, :edit
+    put "/users/reset_password/:token", UserResetPasswordController, :update
+  end
+
+  scope "/", SybanPnxWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    get "/users/settings", UserSettingsController, :edit
+    put "/users/settings", UserSettingsController, :update
+    get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
+  end
+
+  scope "/", SybanPnxWeb do
+    pipe_through [:browser]
+
+    delete "/users/log_out", UserSessionController, :delete
+    get "/users/confirm", UserConfirmationController, :new
+    post "/users/confirm", UserConfirmationController, :create
+    get "/users/confirm/:token", UserConfirmationController, :edit
+    post "/users/confirm/:token", UserConfirmationController, :update
   end
 end

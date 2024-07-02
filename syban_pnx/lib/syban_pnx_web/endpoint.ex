@@ -16,7 +16,7 @@ defmodule SybanPnxWeb.Endpoint do
     at: "/",
     from: :syban_pnx,
     gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+    only: SybanPnxWeb.static_paths() #~w(css fonts images js favicon.ico robots.txt)
 
   if code_reloading? do
     socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket

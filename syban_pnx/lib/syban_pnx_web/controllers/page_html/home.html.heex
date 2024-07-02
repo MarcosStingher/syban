@@ -15,6 +15,9 @@
             }
     
             .sidebar {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
                 width: 220px;
                 background-color: #34495e;
                 color: #ecf0f1;
@@ -92,58 +95,114 @@
                 width: 100% !important;
                 height: auto !important;
             }
+
             #machineSelect {
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #34495e;
-    border-radius: 5px;
-    background-color: #ecf0f1;
-    color: #34495e;
-    font-size: 16px;
-    width: 100%;
-    max-width: 300px;
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
+                padding: 10px;
+                margin-bottom: 20px;
+                border: 1px solid #34495e;
+                border-radius: 5px;
+                background-color: #ecf0f1;
+                color: #34495e;
+                font-size: 16px;
+                width: 100%;
+                max-width: 300px;
+                transition: border-color 0.3s, box-shadow 0.3s;
+            }
 
-#machineSelect:focus {
-    border-color: #2980b9;
-    box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);
-    outline: none;
-}
+            #machineSelect:focus {
+                border-color: #2980b9;
+                box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);
+                outline: none;
+            }
 
+            .sidebar .links {
+                flex-grow: 1;
+            }
+
+            .user-links {
+                display: flex;
+                gap: 5px; /* Espaçamento entre os links */
+            }
         </style>
     </head>
     
 <body>
-<div class="sidebar">
-    <h2>Syban</h2>
-    <a href="#">Dashboard</a>
-    <a href="/dispositivo">Dispositivo</a>
-    <a href="/Relatorio">Relatorio</a>
-    <a href="#">Suporte</a>
-</div>
-<div class="main-content">
-    <select id="machineSelect" onchange="updateCharts()">
-        
-    </select>
-    <div class="chart-container">
-        <div class="chart-box">
-            <canvas id="ramUsageChart"></canvas>
+    <div class="sidebar">
+        <div class="links">
+            <h2 class="font-semibold">SYBAN</h2>
+            <a href="#">Dashboard</a>
+            <a href="/dispositivo">Dispositivos</a>
+            <a href="/eventos/1">Eventos</a>
+            <a href="/Relatorio">Relatório</a>
+            <a href="#">Suporte</a>
+            <h2></h2>
         </div>
-        <div class="chart-box doughnut-chart">
-            <canvas id="diskUsageChart"></canvas>
-        </div>
-        <div class="chart-box">
-            <canvas id="cpuUsageChart"></canvas>
-        </div>
-        <div class="chart-box">
-            <canvas id="gpuUsageChart"></canvas>
-        </div>
-        <div class="chart-box">
-            <canvas id="gpuMemoryChart"></canvas>
+        <ul>
+          <%= if @current_user do %>
+              <li class="leading-6">
+                  <%= @current_user.email %>
+              </li>
+              <div class="user-links">
+                  <li>
+                      <.link
+                          href={~p"/users/settings"}
+                          class="text-[0.7rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-400"
+                      >
+                          Configurações
+                      </.link>
+                  </li>
+                  <li>
+                      <.link
+                          href={~p"/users/log_out"}
+                          method="delete"
+                          class="text-[0.7rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-400"
+                      >
+                          Sair
+                      </.link>
+                  </li>
+              </div>
+          <% else %>
+              <li>
+                  <.link
+                      href={~p"/users/register"}
+                      class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+                  >
+                      Register
+                  </.link>
+              </li>
+              <li>
+                  <.link
+                      href={~p"/users/log_in"}
+                      class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+                  >
+                      Log in
+                  </.link>
+              </li>
+          <% end %>
+        </ul>
+    </div>
+    <div class="main-content">
+        <select id="machineSelect" onchange="updateCharts()">
+
+        </select>
+        <div class="chart-container">
+            <div class="chart-box">
+                <canvas id="ramUsageChart"></canvas>
+            </div>
+            <div class="chart-box doughnut-chart">
+                <canvas id="diskUsageChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <canvas id="cpuUsageChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <canvas id="gpuUsageChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <canvas id="gpuMemoryChart"></canvas>
+            </div>
         </div>
     </div>
-</div>
 
     
 <script>

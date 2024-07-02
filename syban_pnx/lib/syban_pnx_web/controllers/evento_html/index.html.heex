@@ -1,0 +1,55 @@
+<.header>
+  Listing Eventos
+  <:actions>
+    <.link href={~p"/eventos/new"}>
+      <.button>New Evento</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="eventos" rows={@eventos} row_click={&JS.navigate(~p"/eventos/#{&1}")}>
+  <:col :let={evento} label="Memramusada"><%= evento.memRamUsada %></:col>
+  <:col :let={evento} label="Memramusadaurgencia"><%= evento.memRamUsadaUrgencia %></:col>
+  <:col :let={evento} label="Memramusadaimpacto"><%= evento.memRamUsadaImpacto %></:col>
+  <:col :let={evento} label="Mempercentual"><%= evento.memPercentual %></:col>
+  <:col :let={evento} label="Mempercentualurgencia"><%= evento.memPercentualUrgencia %></:col>
+  <:col :let={evento} label="Mempercentualimpacto"><%= evento.memPercentualImpacto %></:col>
+  <:col :let={evento} label="Discousado"><%= evento.discoUsado %></:col>
+  <:col :let={evento} label="Discousadourgencia"><%= evento.discoUsadoUrgencia %></:col>
+  <:col :let={evento} label="Discousadoimpacto"><%= evento.discoUsadoImpacto %></:col>
+  <:col :let={evento} label="Discopercentual"><%= evento.discoPercentual %></:col>
+  <:col :let={evento} label="Discopercentualurgencia"><%= evento.discoPercentualUrgencia %></:col>
+  <:col :let={evento} label="Discopercentualimpacto"><%= evento.discoPercentualImpacto %></:col>
+  <:col :let={evento} label="Cpupercentual"><%= evento.cpuPercentual %></:col>
+  <:col :let={evento} label="Cpupercentualurgencia"><%= evento.cpuPercentualUrgencia %></:col>
+  <:col :let={evento} label="Cpupercentualimpacto"><%= evento.cpuPercentualImpacto %></:col>
+  <:col :let={evento} label="Processlogico"><%= evento.processLogico %></:col>
+  <:col :let={evento} label="Processlogicourgencia"><%= evento.processLogicoUrgencia %></:col>
+  <:col :let={evento} label="Processlogicoimpacto"><%= evento.processLogicoImpacto %></:col>
+  <:col :let={evento} label="Processfisico"><%= evento.processFisico %></:col>
+  <:col :let={evento} label="Processfisicourgencia"><%= evento.processFisicoUrgencia %></:col>
+  <:col :let={evento} label="Processfisicoimpacto"><%= evento.processFisicoImpacto %></:col>
+  <:col :let={evento} label="Freqcpu"><%= evento.freqCPU %></:col>
+  <:col :let={evento} label="Freqcpuurgencia"><%= evento.freqCPUUrgencia %></:col>
+  <:col :let={evento} label="Freqcpuimpacto"><%= evento.freqCPUImpacto %></:col>
+  <:col :let={evento} label="Gpuusada"><%= evento.gpuUsada %></:col>
+  <:col :let={evento} label="Gpuusadaurgencia"><%= evento.gpuUsadaUrgencia %></:col>
+  <:col :let={evento} label="Gpuusadaimpacto"><%= evento.gpuUsadaImpacto %></:col>
+  <:col :let={evento} label="Gputemp"><%= evento.gpuTemp %></:col>
+  <:col :let={evento} label="Gputempurgencia"><%= evento.gpuTempUrgencia %></:col>
+  <:col :let={evento} label="Gputempimpacto"><%= evento.gpuTempImpacto %></:col>
+  <:col :let={evento} label="Gpumemusada"><%= evento.gpuMemUsada %></:col>
+  <:col :let={evento} label="Gpumemusadaurgencia"><%= evento.gpuMemUsadaUrgencia %></:col>
+  <:col :let={evento} label="Gpumemusadaimpacto"><%= evento.gpuMemUsadaImpacto %></:col>
+  <:action :let={evento}>
+    <div class="sr-only">
+      <.link navigate={~p"/eventos/#{evento}"}>Show</.link>
+    </div>
+    <.link navigate={~p"/eventos/#{evento}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={evento}>
+    <.link href={~p"/eventos/#{evento}"} method="delete" data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table>
