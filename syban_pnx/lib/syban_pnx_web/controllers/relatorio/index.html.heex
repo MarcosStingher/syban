@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios de Monitoramento</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .button-container button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            flex: 1;
+            margin: 0 10px;
+        }
+
+        .button-container button:hover {
+            background-color: #2980b9;
+        }
+
+        .report-container, .chart-container {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .export-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-around;
+            display: none; /* Esconde os botões inicialmente */
+        }
+
+        .export-container button {
+            padding: 10px 20px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .export-container button:hover {
+            background-color: #27ae60;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Relatórios de Monitoramento</h1>
+        <div class="button-container">
+            <button onclick="generateReport('memoria')">Relatório de Memória</button>
+            <button onclick="generateReport('disco')">Relatório de Disco</button>
+            <button onclick="generateReport('cpu')">Relatório de CPU</button>
+            <button onclick="generateReport('gpu')">Relatório de GPU</button>
+        </div>
+        <div id="reportContainer" class="report-container"></div>
+        <div id="chartContainer" class="chart-container"></div>
+        <div class="export-container" id="exportContainer">
+            <button onclick="exportReport('pdf')">Exportar em PDF</button>
+            <button onclick="exportReport('csv')">Exportar em CSV</button>
+        </div>
+    </div>
+
+    <script>
+        async function fetchData() {
+            const response = await fetch('/api/monitoramento');
+            const result = await response.json();
+            return result.data;
+        }
+
+        function calculateStats(data, field) {
+            const values = data.map(item => parseFloat(item[field]));
+            const max = Math.max(...values);
+            const min = Math.min(...values);
+            const avg = values.reduce((a, b) => a + b, 0) / values.length;
+            return { max, min, avg };
+        }
+
+        function generateTable(title, stats, detailedData) {
+            let details = detailedData.map(item => `
+                <tr>
+                    <td>${new Date(item.datahora).toLocaleString()}</td>
+                    <td>${item.value.toFixed(2)}</td>
+                </tr>
+            `).join('');
+
+            return `
+                <h2>${title}</h2>
+                <table>
+                    <tr>
+                        <th>Máximo</th>
+                        <th>Mínimo</th>
+                        <th>Média</th>
+                    </tr>
+                    <tr>
+                        <td>${stats.max.toFixed(2)}</td>
+                        <td>${stats.min.toFixed(2)}</td>
+                        <td>${stats.avg.toFixed(2)}</td>
+                    </tr>
+                </table>
+                <h3>Detalhes:</h3>
+                <table>
+                    <tr>
+                        <th>Data e Hora</th>
+                        <th>Valor</th>
+                    </tr>
+                    ${details}
+                </table>
+            `;
+        }
+
+        function generateChart(title, labels, data) {
+            return `
+                <h2>${title}</h2>
+                <canvas id="chart"></canvas>
+                <script>
+                    const ctx = document.getElementById('chart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ${JSON.stringify(labels)},
+                            datasets: [{
+                                label: '${title}',
+                                data: ${JSON.stringify(data)},
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 2,
+                                fill: false
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                <\/script>
+            `;
+        }
+
+        async function generateReport(type) {
+            const data = await fetchData();
+            let reportContent = '';
+            let chartContent = '';
+            let labels = data.map(item => new Date(item.datahora).toLocaleString());
+            let values = [];
+
+            switch (type) {
+                case 'memoria':
+                    const memoriaStats = calculateStats(data, 'memPercentual');
+                    values = data.map(item => parseFloat(item.memPercentual));
+                    reportContent = generateTable('Relatório de Uso de Memória (%)', memoriaStats, data.map(item => ({ datahora: item.datahora, value: parseFloat(item.memPercentual) })));
+                    chartContent = generateChart('Uso de Memória ao Longo do Tempo (%)', labels, values);
+                    break;
+                case 'disco':
+                    const discoStats = calculateStats(data, 'discoPercentual');
+                    values = data.map(item => parseFloat(item.discoPercentual));
+                    reportContent = generateTable('Relatório de Uso de Disco (%)', discoStats, data.map(item => ({ datahora: item.datahora, value: parseFloat(item.discoPercentual) })));
+                    chartContent = generateChart('Uso de Disco ao Longo do Tempo (%)', labels, values);
+                    break;
+                case 'cpu':
+                    const cpuStats = calculateStats(data, 'cpuPercentual');
+                    values = data.map(item => parseFloat(item.cpuPercentual));
+                    reportContent = generateTable('Relatório de Uso de CPU (%)', cpuStats, data.map(item => ({ datahora: item.datahora, value: parseFloat(item.cpuPercentual) })));
+                    chartContent = generateChart('Uso de CPU ao Longo do Tempo (%)', labels, values);
+                    break;
+                case 'gpu':
+                    const gpuStats = calculateStats(data, 'gpuUsada');
+                    values = data.map(item => parseFloat(item.gpuUsada));
+                    reportContent = generateTable('Relatório de Uso de GPU (%)', gpuStats, data.map(item => ({ datahora: item.datahora, value: parseFloat(item.gpuUsada) })));
+                    chartContent = generateChart('Uso de GPU ao Longo do Tempo (%)', labels, values);
+                    break;
+                default:
+                    reportContent = '<p>Tipo de relatório desconhecido.</p>';
+            }
+
+            document.getElementById('reportContainer').innerHTML = reportContent;
+            document.getElementById('chartContainer').innerHTML = chartContent;
+
+            // Exibe os botões de exportação
+            document.getElementById('exportContainer').style.display = 'flex';
+        }
+
+        function exportReport(format) {
+            // Lógica para exportar o relatório no formato escolhido
+            alert(`Exportar em ${format} ainda não implementado.`);
+        }
+    </script>
+</body>
+</html>
