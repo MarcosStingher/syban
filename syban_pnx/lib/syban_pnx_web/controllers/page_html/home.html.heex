@@ -1,131 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dashboards de Monitoramento</title>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-        <style>
-            /* Seu CSS aqui */
-            body {
-                display: flex;
-                font-family: Arial, sans-serif;
-                margin: 0;
-            }
-    
-            .sidebar {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                width: 220px;
-                background-color: #34495e;
-                color: #ecf0f1;
-                padding: 20px;
-                box-sizing: border-box;
-                height: 100vh;
-                position: fixed;
-                top: 0;
-                left: 0;
-                overflow: hidden;
-                transition: width 0.3s;
-            }
-    
-            .sidebar:hover {
-                width: 250px;
-            }
-    
-            .sidebar h2 {
-                font-size: 1.5em;
-                margin-bottom: 20px;
-                text-align: center;
-                border-bottom: 2px solid #ecf0f1;
-                padding-bottom: 10px;
-            }
-    
-            .sidebar a {
-                color: #ecf0f1;
-                text-decoration: none;
-                display: block;
-                padding: 15px 20px;
-                margin: 10px 0;
-                border-radius: 4px;
-                transition: background-color 0.3s, padding-left 0.3s;
-            }
-    
-            .sidebar a:hover {
-                background-color: #2c3e50;
-                padding-left: 30px;
-            }
-    
-            .main-content {
-                margin-left: 220px;
-                /* Ajuste conforme a largura da sidebar */
-                padding: 20px;
-                box-sizing: border-box;
-                width: calc(100% - 220px);
-                transition: margin-left 0.3s, width 0.3s;
-            }
-    
-            .sidebar:hover ~ .main-content {
-                margin-left: 250px;
-                /* Ajuste conforme a largura da sidebar */
-                width: calc(100% - 250px);
-            }
-    
-            .chart-container {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: space-around;
-                align-items: center;
-            }
-    
-            .chart-box {
-                width: 40%;
-                /* Ajuste a largura dos gráficos */
-                margin-bottom: 20px;
-            }
-    
-            .chart-box.doughnut-chart {
-                width: 25%;
-                /* Ajuste específico para o gráfico de pizza */
-            }
-    
-            canvas {
-                width: 100% !important;
-                height: auto !important;
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboards de Monitoramento</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
 
-            #machineSelect {
-                padding: 10px;
-                margin-bottom: 20px;
-                border: 1px solid #34495e;
-                border-radius: 5px;
-                background-color: #ecf0f1;
-                color: #34495e;
-                font-size: 16px;
-                width: 100%;
-                max-width: 300px;
-                transition: border-color 0.3s, box-shadow 0.3s;
-            }
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 220px;
+            background-color: #34495e;
+            color: #ecf0f1;
+            padding: 20px;
+            box-sizing: border-box;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            transition: width 0.3s;
+        }
 
-            #machineSelect:focus {
-                border-color: #2980b9;
-                box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);
-                outline: none;
-            }
+        .sidebar:hover {
+            width: 250px;
+        }
 
-            .sidebar .links {
-                flex-grow: 1;
-            }
+        .sidebar h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+        }
 
-            .user-links {
-                display: flex;
-                gap: 5px; /* Espaçamento entre os links */
-            }
-        </style>
-    </head>
-    
+        .sidebar a {
+            color: #ecf0f1;
+            text-decoration: none;
+            display: block;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border-radius: 4px;
+            transition: background-color 0.3s, padding-left 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #2c3e50;
+            padding-left: 30px;
+        }
+
+        .main-content {
+            margin-left: 220px;
+            padding: 20px;
+            box-sizing: border-box;
+            width: calc(100% - 220px);
+            transition: margin-left 0.3s, width 0.3s;
+        }
+
+        .sidebar:hover ~ .main-content {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+        }
+
+        .chart-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .chart-box {
+            width: 40%;
+            margin-bottom: 20px;
+        }
+
+        .chart-box.doughnut-chart {
+            width: 25%;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: auto !important;
+        }
+
+        #machineSelect {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #34495e;
+            border-radius: 5px;
+            background-color: #ecf0f1;
+            color: #34495e;
+            font-size: 16px;
+            width: 100%;
+            max-width: 300px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        #machineSelect:focus {
+            border-color: #2980b9;
+            box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);
+            outline: none;
+        }
+
+        .sidebar .links {
+            flex-grow: 1;
+        }
+
+        .user-links {
+            display: flex;
+            gap: 5px;
+        }
+
+        .event-container {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .event-item {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+
 <body>
     <div class="sidebar">
         <div class="links">
@@ -182,9 +191,10 @@
         </ul>
     </div>
     <div class="main-content">
-        <select id="machineSelect" onchange="updateCharts()">
-
+        <select id="machineSelect" onchange="renderCharts()">
+            <option value="">Selecione uma Máquina</option>
         </select>
+        <div id="eventContainer" class="event-container"></div>
         <div class="chart-container">
             <div class="chart-box">
                 <canvas id="ramUsageChart"></canvas>
@@ -204,262 +214,306 @@
         </div>
     </div>
 
-    
-<script>
-    let ramUsageChart;
-    let diskUsageChart;
-    let cpuUsageChart;
-    let gpuUsageChart;
-    let gpuMemoryChart;
-    let allData = [];
-    
-    async function fetchData() {
-        const response = await fetch("http://localhost:4000/api/monitoramento");
-        const result = await response.json();
-        allData = result.data;
-        populateMachineDropdown();
-        updateCharts();
-    }
-    
-    function populateMachineDropdown() {
-        const machineSelect = document.getElementById('machineSelect');
-        const machineIds = [...new Set(allData.map(item => item.idmaquina))];
-    
-        machineIds.forEach(id => {
-            const option = document.createElement('option');
-            option.value = id;
-            option.text = `Máquina ${id}`;
-            machineSelect.appendChild(option);
-        });
-    }
-    
-    function processData(machineId) {
-        const filteredData = allData.filter(item => item.idmaquina == machineId);
-        const labels = filteredData.map(item => new Date(item.datahora).toLocaleString());
-        const memoryUsage = filteredData.map(item => parseFloat(item.memPercentual));
-        const diskTotal = filteredData.map(item => parseFloat(item.discoTotal));
-        const diskUsed = filteredData.map(item => parseFloat(item.discoUsado));
-        const cpuUsage = filteredData.map(item => parseFloat(item.cpuPercentual));
-        const memRamUsada = filteredData.map(item => parseFloat(item.memRamUsada));
-        const memRamTotal = filteredData.map(item => parseFloat(item.memRamTotal));
-        const gpuUsada = filteredData.map(item => parseFloat(item.gpuUsada));
-        const gpuTemp = filteredData.map(item => parseFloat(item.gpuTemp));
-        const gpuMemUsada = filteredData.map(item => parseFloat(item.gpuMemUsada));
-        const gpuMemTot = filteredData.map(item => parseFloat(item.gpuMemTot));
-        const gpuMemLivre = filteredData.map(item => parseFloat(item.gpuMemLivre));
-    
-        return { labels, memoryUsage, diskTotal, diskUsed, cpuUsage, memRamUsada, memRamTotal, gpuUsada, gpuTemp, gpuMemUsada, gpuMemTot, gpuMemLivre };
-    }
-    
-    function updateCharts() {
-        const machineId = document.getElementById('machineSelect').value;
-        renderCharts(machineId);
-    }
-    
-    function renderCharts(machineId) {
-        const data = processData(machineId);
-        const { labels, memoryUsage, diskTotal, diskUsed, cpuUsage, memRamUsada, memRamTotal, gpuUsada, gpuTemp, gpuMemUsada, gpuMemTot, gpuMemLivre } = data;
-    
-        // Configuração do Gráfico de Linha para Uso de Memória RAM com mudança de cor condicional
-        const ramUsageData = {
-            labels: labels,
-            datasets: [{
-                label: 'Uso de Memória RAM (%)',
-                data: memoryUsage,
-                fill: false,
-                borderColor: memoryUsage.map(value => value >= 85 ? 'rgb(255, 99, 132)' : 'rgb(75, 192, 192)'),
-                tension: 0.1
-            }]
+    <script>
+        let ramUsageChart;
+        let diskUsageChart;
+        let cpuUsageChart;
+        let gpuUsageChart;
+        let gpuMemoryChart;
+        let allData = [];
+        let eventData = {};
+        let alertFlags = {
+            memPercentual: false,
+            discoUsado: false,
+            cpuPercentual: false,
+            gpuUsada: false,
+            gpuMemUsada: false
         };
-    
-        const ramUsageConfig = {
-            type: 'line',
-            data: ramUsageData,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+
+        async function fetchData() {
+            const response = await fetch("http://localhost:4000/api/monitoramento");
+            const result = await response.json();
+            allData = result.data;
+            await fetchEvents();
+            populateMachineDropdown();
+            renderCharts();
+        }
+
+        async function fetchEvents() {
+            const response = await fetch("http://localhost:4000/api/eventos");
+            const result = await response.json();
+            eventData = result.data[0]; // Assume there's only one event object for now
+        }
+
+        function populateMachineDropdown() {
+            const machineSelect = document.getElementById('machineSelect');
+            machineSelect.innerHTML = '<option value="">Selecione uma Máquina</option>';
+            const machineIds = [...new Set(allData.map(item => item.idmaquina))];
+
+            machineIds.forEach(id => {
+                const option = document.createElement('option');
+                option.value = id;
+                option.text = `Máquina ${id}`;
+                machineSelect.appendChild(option);
+            });
+
+            if (machineIds.includes(1)) {
+                machineSelect.value = 1;
             }
-        };
-    
-        // Configuração do Gráfico de Pizza para Uso de Disco
-        const lastDiskUsed = diskUsed[diskUsed.length - 1];
-        const lastDiskTotal = diskTotal[diskTotal.length - 1];
-        const diskUsageData = {
-            labels: ['Disco Usado', 'Disco Livre'],
-            datasets: [{
-                data: [lastDiskUsed, lastDiskTotal - lastDiskUsed],
-                backgroundColor: lastDiskUsed / lastDiskTotal >= 0.85 ? ['rgba(255, 99, 132, 0.2)', 'rgba(255, 206, 86, 0.2)'] : ['rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)'],
-                borderColor: lastDiskUsed / lastDiskTotal >= 0.85 ? ['rgba(255, 99, 132, 1)', 'rgba(255, 206, 86, 1)'] : ['rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
-                borderWidth: 1
-            }]
-        };
-    
-        const diskUsageConfig = {
-            type: 'doughnut',
-            data: diskUsageData,
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    datalabels: {
-                        formatter: (value, context) => {
-                            let sum = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
-                            let percentage = (value * 100 / sum).toFixed(2) + '%';
-                            return percentage;
-                        },
-                        color: '#36A2EB',
-                        font: {
-                            weight: 'bold',
-                            size: 16,
+        }
+
+        function processData(machineId) {
+            const filteredData = allData.filter(item => item.idmaquina == machineId);
+            const labels = filteredData.map(item => new Date(item.datahora).toLocaleString());
+            const memoryUsage = filteredData.map(item => parseFloat(item.memPercentual));
+            const diskTotal = filteredData.map(item => parseFloat(item.discoTotal));
+            const diskUsed = filteredData.map(item => parseFloat(item.discoUsado));
+            const cpuUsage = filteredData.map(item => parseFloat(item.cpuPercentual));
+            const gpuUsada = filteredData.map(item => parseFloat(item.gpuUsada));
+            const gpuMemUsada = filteredData.map(item => parseFloat(item.gpuMemUsada));
+            const gpuMemTot = filteredData.map(item => parseFloat(item.gpuMemTot));
+            const gpuMemLivre = filteredData.map(item => parseFloat(item.gpuMemLivre));
+
+            return { labels, memoryUsage, diskTotal, diskUsed, cpuUsage, gpuUsada, gpuMemUsada, gpuMemTot, gpuMemLivre };
+        }
+
+        function renderCharts() {
+            const machineId = document.getElementById('machineSelect').value;
+            const data = processData(machineId);
+            const { labels, memoryUsage, diskTotal, diskUsed, cpuUsage, gpuUsada, gpuMemUsada, gpuMemTot, gpuMemLivre } = data;
+
+            const lastMemoryUsage = memoryUsage[memoryUsage.length - 1];
+            const lastDiskUsed = diskUsed[diskUsed.length - 1];
+            const lastCpuUsage = cpuUsage[cpuUsage.length - 1];
+            const lastGpuUsada = gpuUsada[gpuUsada.length - 1];
+            const lastGpuMemUsada = gpuMemUsada[gpuMemUsada.length - 1];
+
+            const eventContainer = document.getElementById('eventContainer');
+            eventContainer.innerHTML = '';
+            eventContainer.style.display = 'none';
+
+            if (lastMemoryUsage >= eventData.memPercentual) {
+                const eventItem = document.createElement('div');
+                eventItem.className = 'event-item';
+                eventItem.innerText = `Memória RAM: ${lastMemoryUsage}%`;
+                eventContainer.appendChild(eventItem);
+                eventContainer.style.display = 'block';
+            }
+
+            if ((lastDiskUsed / diskTotal[diskUsed.indexOf(lastDiskUsed)]) * 100 >= eventData.discoUsado) {
+                const eventItem = document.createElement('div');
+                eventItem.className = 'event-item';
+                eventItem.innerText = `Disco Usado: ${lastDiskUsed} GB`;
+                eventContainer.appendChild(eventItem);
+                eventContainer.style.display = 'block';
+            }
+
+            if (lastCpuUsage >= eventData.cpuPercentual) {
+                const eventItem = document.createElement('div');
+                eventItem.className = 'event-item';
+                eventItem.innerText = `CPU: ${lastCpuUsage}%`;
+                eventContainer.appendChild(eventItem);
+                eventContainer.style.display = 'block';
+            }
+
+            if (lastGpuUsada >= eventData.gpuUsada) {
+                const eventItem = document.createElement('div');
+                eventItem.className = 'event-item';
+                eventItem.innerText = `GPU: ${lastGpuUsada}%`;
+                eventContainer.appendChild(eventItem);
+                eventContainer.style.display = 'block';
+            }
+
+            if (lastGpuMemUsada >= eventData.gpuMemUsada) {
+                const eventItem = document.createElement('div');
+                eventItem.className = 'event-item';
+                eventItem.innerText = `Memória GPU: ${lastGpuMemUsada} GB`;
+                eventContainer.appendChild(eventItem);
+                eventContainer.style.display = 'block';
+            }
+
+            // Configuração do Gráfico de Linha para Uso de Memória RAM com mudança de cor condicional
+            const ramUsageData = {
+                labels: labels,
+                datasets: [{
+                    label: 'Uso de Memória RAM (%)',
+                    data: memoryUsage,
+                    fill: false,
+                    borderColor: memoryUsage.map(value => value >= eventData.memPercentual ? 'rgb(255, 99, 132)' : 'rgb(75, 192, 192)'),
+                    tension: 0.1
+                }]
+            };
+
+            const ramUsageConfig = {
+                type: 'line',
+                data: ramUsageData,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
                         }
                     }
                 }
-            }
-        };
-    
-        // Configuração do Gráfico de Barras para Uso da CPU
-        const cpuUsageData = {
-            labels: labels,
-            datasets: [{
-                label: 'Uso de CPU (%)',
-                data: cpuUsage,
-                backgroundColor: cpuUsage.map(value => value > 90 ? 'rgba(255, 99, 132, 0.2)' : 'rgba(75, 192, 192, 0.2)'),
-                borderColor: cpuUsage.map(value => value > 90 ? 'rgba(255, 99, 132, 1)' : 'rgba(75, 192, 192, 1)'),
-                borderWidth: 1
-            }]
-        };
-    
-        const cpuUsageConfig = {
-            type: 'bar',
-            data: cpuUsageData,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+            };
+
+            const diskUsageData = {
+                labels: ['Disco Usado', 'Disco Livre'],
+                datasets: [{
+                    data: [lastDiskUsed, diskTotal[diskUsed.indexOf(lastDiskUsed)] - lastDiskUsed],
+                    backgroundColor: lastDiskUsed / diskTotal[diskUsed.indexOf(lastDiskUsed)] >= eventData.discoUsado / 100 ? ['rgba(255, 99, 132, 0.2)', 'rgba(255, 206, 86, 0.2)'] : ['rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)'],
+                    borderColor: lastDiskUsed / diskTotal[diskUsed.indexOf(lastDiskUsed)] >= eventData.discoUsado / 100 ? ['rgba(255, 99, 132, 1)', 'rgba(255, 206, 86, 1)'] : ['rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
+                    borderWidth: 1
+                }]
+            };
+
+            const diskUsageConfig = {
+                type: 'doughnut',
+                data: diskUsageData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        datalabels: {
+                            formatter: (value, context) => {
+                                let sum = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                let percentage = (value * 100 / sum).toFixed(2) + '%';
+                                return percentage;
+                            },
+                            color: '#36A2EB',
+                            font: {
+                                weight: 'bold',
+                                size: 16,
+                            }
+                        }
                     }
                 }
-            }
-        };
-    
-        // Configuração do Gráfico de Linha para Uso da GPU e Temperatura
-        const gpuUsageData = {
-            labels: labels,
-            datasets: [
-                {
+            };
+
+            const cpuUsageData = {
+                labels: labels,
+                datasets: [{
+                    label: 'Uso de CPU (%)',
+                    data: cpuUsage,
+                    backgroundColor: cpuUsage.map(value => value >= eventData.cpuPercentual ? 'rgba(255, 99, 132, 0.2)' : 'rgba(75, 192, 192, 0.2)'),
+                    borderColor: cpuUsage.map(value => value >= eventData.cpuPercentual ? 'rgba(255, 99, 132, 1)' : 'rgba(75, 192, 192, 1)'),
+                    borderWidth: 1
+                }]
+            };
+
+            const cpuUsageConfig = {
+                type: 'bar',
+                data: cpuUsageData,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            };
+
+            const gpuUsageData = {
+                labels: labels,
+                datasets: [{
                     label: 'Uso de GPU (%)',
                     data: gpuUsada,
                     fill: false,
-                    borderColor: 'rgb(54, 162, 235)',
+                    borderColor: gpuUsada.map(value => value >= eventData.gpuUsada ? 'rgb(255, 99, 132)' : 'rgb(54, 162, 235)'),
                     tension: 0.1
-                },
-                {
-                    label: 'Temperatura da GPU (°C)',
-                    data: gpuTemp,
-                    fill: false,
-                    borderColor: 'rgb(255, 159, 64)',
-                    tension: 0.1
-                }
-            ]
-        };
-    
-        const gpuUsageConfig = {
-            type: 'line',
-            data: gpuUsageData,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+                }]
+            };
+
+            const gpuUsageConfig = {
+                type: 'line',
+                data: gpuUsageData,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
-            }
-        };
-    
-        // Configuração do Gráfico de Linha para Uso da Memória da GPU
-        const gpuMemoryData = {
-            labels: labels,
-            datasets: [
-                {
-                    label: 'Memória da GPU Usada (GB)',
-                    data: gpuMemUsada,
-                    fill: false,
-                    borderColor: 'rgb(153, 102, 255)',
-                    tension: 0.1
-                },
-                {
-                    label: 'Memória Total da GPU (GB)',
-                    data: gpuMemTot,
-                    fill: false,
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
-                },
-                {
-                    label: 'Memória Livre da GPU (GB)',
-                    data: gpuMemLivre,
-                    fill: false,
-                    borderColor: 'rgb(255, 205, 86)',
-                    tension: 0.1
-                }
-            ]
-        };
-    
-        const gpuMemoryConfig = {
-            type: 'line',
-            data: gpuMemoryData,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+            };
+
+            const gpuMemoryData = {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Memória da GPU Usada (GB)',
+                        data: gpuMemUsada,
+                        fill: false,
+                        borderColor: gpuMemUsada.map(value => value >= eventData.gpuMemUsada ? 'rgb(255, 99, 132)' : 'rgb(153, 102, 255)'),
+                        tension: 0.1
+                    },
+                    {
+                        label: 'Memória Total da GPU (GB)',
+                        data: gpuMemTot,
+                        fill: false,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    },
+                    {
+                        label: 'Memória Livre da GPU (GB)',
+                        data: gpuMemLivre,
+                        fill: false,
+                        borderColor: 'rgb(255, 205, 86)',
+                        tension: 0.1
+                    }
+                ]
+            };
+
+            const gpuMemoryConfig = {
+                type: 'line',
+                data: gpuMemoryData,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
+            };
+
+            // Se os gráficos já existirem, atualiza os dados; caso contrário, cria os gráficos
+            if (ramUsageChart && diskUsageChart && cpuUsageChart && gpuUsageChart && gpuMemoryChart) {
+                ramUsageChart.data = ramUsageData;
+                ramUsageChart.update();
+                diskUsageChart.data = diskUsageData;
+                diskUsageChart.update();
+                cpuUsageChart.data = cpuUsageData;
+                cpuUsageChart.update();
+                gpuUsageChart.data = gpuUsageData;
+                gpuUsageChart.update();
+                gpuMemoryChart.data = gpuMemoryData;
+                gpuMemoryChart.update();
+            } else {
+                const ramCtx = document.getElementById('ramUsageChart').getContext('2d');
+                ramUsageChart = new Chart(ramCtx, ramUsageConfig);
+
+                const diskCtx = document.getElementById('diskUsageChart').getContext('2d');
+                diskUsageChart = new Chart(diskCtx, diskUsageConfig);
+
+                const cpuCtx = document.getElementById('cpuUsageChart').getContext('2d');
+                cpuUsageChart = new Chart(cpuCtx, cpuUsageConfig);
+
+                const gpuCtx = document.getElementById('gpuUsageChart').getContext('2d');
+                gpuUsageChart = new Chart(gpuCtx, gpuUsageConfig);
+
+                const gpuMemoryCtx = document.getElementById('gpuMemoryChart').getContext('2d');
+                gpuMemoryChart = new Chart(gpuMemoryCtx, gpuMemoryConfig);
             }
-        };
-    
-        // Se os gráficos já existirem, atualiza os dados; caso contrário, cria os gráficos
-        if (ramUsageChart && diskUsageChart && cpuUsageChart && gpuUsageChart && gpuMemoryChart) {
-            ramUsageChart.data = ramUsageData;
-            ramUsageChart.update();
-            diskUsageChart.data = diskUsageData;
-            diskUsageChart.update();
-            cpuUsageChart.data = cpuUsageData;
-            cpuUsageChart.update();
-            gpuUsageChart.data = gpuUsageData;
-            gpuUsageChart.update();
-            gpuMemoryChart.data = gpuMemoryData;
-            gpuMemoryChart.update();
-        } else {
-            const ramCtx = document.getElementById('ramUsageChart').getContext('2d');
-            ramUsageChart = new Chart(ramCtx, ramUsageConfig);
-    
-            const diskCtx = document.getElementById('diskUsageChart').getContext('2d');
-            diskUsageChart = new Chart(diskCtx, diskUsageConfig);
-    
-            const cpuCtx = document.getElementById('cpuUsageChart').getContext('2d');
-            cpuUsageChart = new Chart(cpuCtx, cpuUsageConfig);
-    
-            const gpuCtx = document.getElementById('gpuUsageChart').getContext('2d');
-            gpuUsageChart = new Chart(gpuCtx, gpuUsageConfig);
-    
-            const gpuMemoryCtx = document.getElementById('gpuMemoryChart').getContext('2d');
-            gpuMemoryChart = new Chart(gpuMemoryCtx, gpuMemoryConfig);
         }
-    }
 
-    function startTimer() {
-        setInterval(updateCharts, 60000); // 6000ms = 6 segundos
-    }
-    
-    window.onload = function() {
-        fetchData();
-        startTimer(); 
-    };
+        function startTimer() {
+            setInterval(fetchData, 60000); // 60000ms = 60 segundos
+        }
+
+        window.onload = function() {
+            fetchData();
+            startTimer();
+        };
     </script>
-    
-
-    
 </body>
 </html>
