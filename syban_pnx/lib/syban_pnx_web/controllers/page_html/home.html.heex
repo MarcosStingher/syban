@@ -146,7 +146,7 @@
             <a href="#">Dashboard</a>
             <a href="/dispositivo">Dispositivos</a>
             <a href="/eventos/1">Eventos</a>
-            <a href="/Relatorio">Relatório</a>
+            <a href="/relatorio">Relatório</a>
             <a href="#">Suporte</a>
             <h2></h2>
         </div>
@@ -299,7 +299,7 @@
             if (lastMemoryUsage >= eventData.memPercentual) {
                 const eventItem = document.createElement('div');
                 eventItem.className = 'event-item';
-                eventItem.innerHTML = `Memória RAM: <span> ${lastMemoryUsage}%</span>, O evento tem <span>impacto ${eventData.memPercentualImpacto}</span> e <span>urgência ${eventData.memPercentualUrgencia}</span>. Possível solução: ${eventData.memPercentualSolucao}.`;
+                eventItem.innerHTML = `Memória RAM: <span> ${lastMemoryUsage}%</span>, O evento tem <span>impacto ${eventData.memPercentualImpacto}</span> e <span>urgência ${eventData.memPercentualUrgencia}</span>. Possível solução:<span> ${eventData.memPercentualSolucao} </span>.`;
                 eventContainer.appendChild(eventItem);
                 eventContainer.style.display = 'block';
             }
@@ -307,7 +307,7 @@
             if ((lastDiskUsed / diskTotal[diskUsed.indexOf(lastDiskUsed)]) * 100 >= eventData.discoUsado) {
                 const eventItem = document.createElement('div');
                 eventItem.className = 'event-item';
-                eventItem.innerHTML = `Disco Usado: <span>${lastDiskUsed} GB</span>, O evento tem <span>impacto ${eventData.discoUsadoImpacto}</span> e <span>urgência ${eventData.discoUsadoUrgencia}</span>. Possível solução: ${eventData.discoPercentualSolucao}.`;
+                eventItem.innerHTML = `Disco Usado: <span>${lastDiskUsed} GB</span>, O evento tem <span>impacto ${eventData.discoUsadoImpacto}</span> e <span>urgência ${eventData.discoUsadoUrgencia}</span>. Possível solução:<span> ${eventData.discoPercentualSolucao}.</span>`;
                 eventContainer.appendChild(eventItem);
                 eventContainer.style.display = 'block';
             }
@@ -315,7 +315,7 @@
             if (lastCpuUsage >= eventData.cpuPercentual) {
                 const eventItem = document.createElement('div');
                 eventItem.className = 'event-item';
-                eventItem.innerHTML = `CPU: <span>${lastCpuUsage}%</span>, O evento tem <span>impacto ${eventData.cpuPercentualImpacto}</span> e <span>urgência ${eventData.cpuPercentualUrgencia}</span>. Possível solução: ${eventData.cpuPercentualSolucao}.`;
+                eventItem.innerHTML = `CPU: <span>${lastCpuUsage}%</span>, O evento tem <span>impacto ${eventData.cpuPercentualImpacto}</span> e <span>urgência ${eventData.cpuPercentualUrgencia}</span>. Possível solução: <span>${eventData.cpuPercentualSolucao}.</span>`;
                 eventContainer.appendChild(eventItem);
                 eventContainer.style.display = 'block';
             }
@@ -323,7 +323,7 @@
             if (lastGpuUsada >= eventData.gpuUsada) {
                 const eventItem = document.createElement('div');
                 eventItem.className = 'event-item';
-                eventItem.innerHTML = `GPU: <span>${lastGpuUsada}%</span>, O evento tem <span>impacto ${eventData.gpuUsadaImpacto}</span> e <span>urgência ${eventData.gpuUsadaUrgencia}</span>. Possível solução: ${eventData.gpuTempSolucao}.`;
+                eventItem.innerHTML = `GPU: <span>${lastGpuUsada}%</span>, O evento tem <span>impacto ${eventData.gpuUsadaImpacto}</span> e <span>urgência ${eventData.gpuUsadaUrgencia}</span>. Possível solução: <span>${eventData.gpuTempSolucao}.</span>`;
                 eventContainer.appendChild(eventItem);
                 eventContainer.style.display = 'block';
             }
@@ -331,7 +331,7 @@
             if (lastGpuMemUsada >= eventData.gpuMemUsada) {
                 const eventItem = document.createElement('div');
                 eventItem.className = 'event-item';
-                eventItem.innerHTML = `Memória GPU:<span> ${lastGpuMemUsada} GB</span>, O evento tem <span>impacto ${eventData.gpuMemUsadaImpacto}</span> e <span>urgência ${eventData.gpuMemUsadaUrgencia}</span>. Possível solução: ${eventData.gpuMemUsadaSolucao}.`;
+                eventItem.innerHTML = `Memória GPU:<span> ${lastGpuMemUsada} GB</span>, O evento tem <span>impacto ${eventData.gpuMemUsadaImpacto}</span> e <span>urgência ${eventData.gpuMemUsadaUrgencia}</span>. Possível solução: <span>${eventData.gpuMemUsadaSolucao}.</span>`;
                 eventContainer.appendChild(eventItem);
                 eventContainer.style.display = 'block';
             }

@@ -23,6 +23,8 @@ defmodule SybanPnxWeb.Router do
     resources "/dispositivo", DispositivoController
     resources "/monitoramento", DadoController, except: [:new, :edit]
     resources "/eventos", EventoController
+    get "/relatorio", RelatorioController, :index
+
   end
 
   scope "/api", SybanPnxWeb do
