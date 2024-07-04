@@ -132,6 +132,10 @@
         .event-item {
             margin-bottom: 5px;
         }
+
+        .event-item span {
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -295,7 +299,7 @@
             if (lastMemoryUsage >= eventData.memPercentual) {
                 const eventItem = document.createElement('div');
                 eventItem.className = 'event-item';
-                eventItem.innerText = `Memória RAM: ${lastMemoryUsage}%`;
+                eventItem.innerHTML = `Memória RAM: <span> ${lastMemoryUsage}%</span>, O evento tem <span>impacto ${eventData.memPercentualImpacto}</span> e <span>urgência ${eventData.memPercentualUrgencia}</span>. Possível solução: ${eventData.memPercentualSolucao}.`;
                 eventContainer.appendChild(eventItem);
                 eventContainer.style.display = 'block';
             }
@@ -303,7 +307,7 @@
             if ((lastDiskUsed / diskTotal[diskUsed.indexOf(lastDiskUsed)]) * 100 >= eventData.discoUsado) {
                 const eventItem = document.createElement('div');
                 eventItem.className = 'event-item';
-                eventItem.innerText = `Disco Usado: ${lastDiskUsed} GB`;
+                eventItem.innerHTML = `Disco Usado: <span>${lastDiskUsed} GB</span>, O evento tem <span>impacto ${eventData.discoUsadoImpacto}</span> e <span>urgência ${eventData.discoUsadoUrgencia}</span>. Possível solução: ${eventData.discoPercentualSolucao}.`;
                 eventContainer.appendChild(eventItem);
                 eventContainer.style.display = 'block';
             }
@@ -311,7 +315,7 @@
             if (lastCpuUsage >= eventData.cpuPercentual) {
                 const eventItem = document.createElement('div');
                 eventItem.className = 'event-item';
-                eventItem.innerText = `CPU: ${lastCpuUsage}%`;
+                eventItem.innerHTML = `CPU: <span>${lastCpuUsage}%</span>, O evento tem <span>impacto ${eventData.cpuPercentualImpacto}</span> e <span>urgência ${eventData.cpuPercentualUrgencia}</span>. Possível solução: ${eventData.cpuPercentualSolucao}.`;
                 eventContainer.appendChild(eventItem);
                 eventContainer.style.display = 'block';
             }
@@ -319,7 +323,7 @@
             if (lastGpuUsada >= eventData.gpuUsada) {
                 const eventItem = document.createElement('div');
                 eventItem.className = 'event-item';
-                eventItem.innerText = `GPU: ${lastGpuUsada}%`;
+                eventItem.innerHTML = `GPU: <span>${lastGpuUsada}%</span>, O evento tem <span>impacto ${eventData.gpuUsadaImpacto}</span> e <span>urgência ${eventData.gpuUsadaUrgencia}</span>. Possível solução: ${eventData.gpuTempSolucao}.`;
                 eventContainer.appendChild(eventItem);
                 eventContainer.style.display = 'block';
             }
@@ -327,7 +331,7 @@
             if (lastGpuMemUsada >= eventData.gpuMemUsada) {
                 const eventItem = document.createElement('div');
                 eventItem.className = 'event-item';
-                eventItem.innerText = `Memória GPU: ${lastGpuMemUsada} GB`;
+                eventItem.innerHTML = `Memória GPU:<span> ${lastGpuMemUsada} GB</span>, O evento tem <span>impacto ${eventData.gpuMemUsadaImpacto}</span> e <span>urgência ${eventData.gpuMemUsadaUrgencia}</span>. Possível solução: ${eventData.gpuMemUsadaSolucao}.`;
                 eventContainer.appendChild(eventItem);
                 eventContainer.style.display = 'block';
             }
